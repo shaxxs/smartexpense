@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    tools:context="com.example.mathi.smartexpense.DashboardActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@color/blue"
+        android:text="TABLEAU DE BORD" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/custome_dashboard_button_user"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity=""
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/ic_dashboard_user"
+            android:text="Prénom NOM      Entreprise p.nom@entreprise.fr" />
+
+        <Button
+            android:id="@+id/addERButton"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackOpacityButton"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/ic_dashboard_er"
+            android:text="Ajouter une note de frais" />
+
+        <Button
+            android:id="@+id/refundTrackerButton"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackOpacityButton"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/ic_dashboard_refund"
+            android:text="Suivi des remboursements" />
+
+        <Button
+            android:id="@+id/statButton"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackOpacityButton"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/ic_dashboard_stats"
+            android:text="Statistiques" />
+</LinearLayout>

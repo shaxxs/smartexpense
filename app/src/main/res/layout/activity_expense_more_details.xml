@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    tools:context="com.example.mathi.smartexpense.ExpenseMoreDetailsActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:text="DEPENSE - DETAILS"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseDetailsDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="DATE"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseDetailsCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="VILLE"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/departureDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Date de départ"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/departureDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseReturnDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Date de retour"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseReturnDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseDepartureCityLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Ville de départ"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseDepartureCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseDestinationCityLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Ville d'arrivée"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseDestinationCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseTravelDurationLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Durée du trajet"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseTravelDuration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/blackOpacityButton"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expenseKmLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Kilomètres"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/expenseKm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="..."
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/returnButtonExpenseMoreDetails"
+            android:layout_width="80dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/custome_button"
+            android:drawableStart="@drawable/ic_return_button"
+            android:paddingLeft="15dp" />
+
+        <Button
+            android:id="@+id/proofButton"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="110dp"
+            android:background="@drawable/custome_button"
+            android:textColor="#ffffff"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:text="Justificatif(s)"
+            />
+    </LinearLayout>
+</LinearLayout>
