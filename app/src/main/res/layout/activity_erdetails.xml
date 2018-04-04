@@ -33,7 +33,7 @@
             android:textSize="17sp"
             android:layout_weight="1"
             android:background="@drawable/custome_button"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:layout_margin="5dp"
             android:text="Sauver" />
 
@@ -45,7 +45,7 @@
             android:textSize="17sp"
             android:layout_weight="1"
             android:background="@drawable/custome_button"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:layout_margin="5dp"
             android:text="Soumettre" />
     </LinearLayout>
@@ -54,7 +54,7 @@
         android:id="@+id/numberER"
         android:layout_width="370dp"
         android:layout_height="30dp"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_marginBottom="6dp"
@@ -76,7 +76,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:text="Statut" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:text="..." />
     </LinearLayout>
 
@@ -103,14 +103,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:text="DATE" />
 
         <TextView
             android:id="@+id/ERCity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:gravity="center"
             android:text="VILLE" />
@@ -147,7 +147,7 @@
             android:layout_marginLeft="60dp"
             android:background="@drawable/custome_add_button"
             android:text="+"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:textSize="40sp" />
     </LinearLayout>
 
