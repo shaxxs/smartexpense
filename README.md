@@ -1,2 +1,7 @@
+Projet transversal - Groupe 2
+
 Smart Expense
-Android
+
+Application Android
+
+2018
