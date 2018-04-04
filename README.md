@@ -1,1 +1,2 @@
-# smartexpense
+Smart Expense
+Android
