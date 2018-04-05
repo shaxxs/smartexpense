@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0c0c0e"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleprincipal"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@color/blue"
+        android:text="SUIVI DES REMBOURSEMENTS"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textFiltrePar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Filtrer par:"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/monthsSpinner"
+            android:layout_width="25dp"
+            android:layout_height="27dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:entries="@android:color/background_dark" />
+
+        <Spinner
+            android:id="@+id/yearSpinner"
+            android:layout_width="25dp"
+            android:layout_height="27dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:entries="@android:color/background_dark" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewResultsRefunds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ListView
+            android:id="@+id/listViewRefunds"
+            android:layout_width="match_parent"
+            android:layout_height="342dp"
+            android:layout_weight="1"
+            android:cacheColorHint="@android:color/background_light"></ListView>
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="80dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/custome_button"
+            android:drawableStart="@drawable/ic_return_button"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
