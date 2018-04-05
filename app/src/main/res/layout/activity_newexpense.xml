@@ -36,7 +36,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_calendar" />
@@ -52,7 +52,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_calendar"/>
@@ -68,7 +68,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_calendar" />
@@ -84,7 +84,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_city_profile" />
@@ -100,7 +100,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_city_profile" />
@@ -116,7 +116,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_city_profile" />
@@ -132,7 +132,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_duration" />
@@ -148,7 +148,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_dashboard_refund" />
@@ -164,7 +164,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:visibility="gone"
         android:drawableLeft="@drawable/ic_comments" />
