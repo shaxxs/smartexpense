@@ -5,5 +5,3 @@ Smart Expense
 Application Android
 
 2018
-
-test
