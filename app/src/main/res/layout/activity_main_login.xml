@@ -72,15 +72,5 @@
         android:textAllCaps="false"
         android:text="Connexion" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textStyle="italic"
-        android:textColor="@color/blue"
-        android:layout_marginTop="17dp"
-        android:layout_marginRight="20dp"
-        android:textSize="17sp"
-        android:text="Pas encore inscrit ?" />
 
 </LinearLayout>
