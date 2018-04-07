@@ -61,7 +61,7 @@
         android:text="Mot de passe oublié ?" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/conButton"
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
