@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mathi.smartexpense">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,17 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewERActivity"></activity>
-        <activity android:name=".PasswordActivity"></activity>
-        <activity android:name=".RefundTrackerActivity"></activity>
-        <activity android:name=".StatsActivity"></activity>
-        <activity android:name=".NewExpenseActivity"></activity>
+        <activity android:name=".NewERActivity" />
+        <activity android:name=".PasswordActivity" />
+        <activity android:name=".RefundTrackerActivity" />
+        <activity android:name=".StatsActivity" />
+        <activity android:name=".NewExpenseActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".ExpenseReportActivity" />
         <activity android:name=".ERDetailsActivity" />
         <activity android:name=".ExpenseDetailsActivity" />
-        <activity android:name=".ExpenseMoreDetailsActivity"></activity>
+        <activity android:name=".ExpenseMoreDetailsActivity" />
     </application>
 
 </manifest>
