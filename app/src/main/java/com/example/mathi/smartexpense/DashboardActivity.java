@@ -22,6 +22,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         /* récupération des données de la vue précédente */
         Intent intent = getIntent();
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
@@ -82,7 +83,5 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent3);
             }
         });
-
-
     }
 }
