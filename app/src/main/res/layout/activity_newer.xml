@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0c0c0e">
+    <TextView
+        android:id="@+id/titleprincipal"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@color/blue"
+        android:text="NOUVELLE NOTE DE FRAIS" />
+
+    <EditText
+        android:id="@+id/date"
+        android:hint="Date*"
+        android:inputType="date"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity=""
+        android:paddingLeft="20dp"
+        android:ems="10"
+        android:textColor="@android:color/white"
+        android:background="@drawable/custome_input_profile"
+        android:drawableLeft="@drawable/ic_calendar" />
+
+    <EditText
+        android:hint="Ville*"
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity=""
+        android:paddingLeft="20dp"
+        android:ems="10"
+        android:textColor="@android:color/white"
+        android:background="@drawable/custome_input_profile"
+        android:drawableLeft="@drawable/ic_city_profile" />
+
+    <Spinner
+        android:id="@+id/clientsSpinner"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@android:color/background_light"
+        android:entries="@android:color/background_dark" />
+
+    <EditText
+        android:id="@+id/comments"
+        android:hint="Ajouter un commentaire"
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity=""
+        android:paddingLeft="20dp"
+        android:ems="10"
+        android:textColor="@android:color/white"
+        android:background="@drawable/custome_input_profile"
+        android:drawableLeft="@drawable/ic_comments" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textChampsOblig"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="*champs obligatoires"
+        android:textColor="#FFFF"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="80dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="20dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/custome_button"
+            android:drawableStart="@drawable/ic_return_button"
+            />
+
+        <Button
+            android:id="@+id/btnAddExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="5"
+            android:background="@drawable/custome_button"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:text="Ajouter une dépense" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
