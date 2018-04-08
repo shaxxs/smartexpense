@@ -52,7 +52,7 @@ public class MainLoginActivity extends AppCompatActivity {
         // String pour stocker la réponse du serveur (JSON)
         String result = "";
         // Nouvelle instance de la classe dédiée aux requests HTTP
-        HttpGetRequest getRequest = new HttpGetRequest("GET");
+        HttpGetRequest getRequest = new HttpGetRequest();
         // Execute la fonction doInBackground, de la classe HttpGetRequest en passant l'url
         try {
             // Execution du Thread pour connexion
@@ -62,6 +62,7 @@ public class MainLoginActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         try {
             // Array stocke le tableau d'objets du fichier Json
             JSONArray array = new JSONArray(result);

@@ -19,10 +19,6 @@ public class HttpGetRequest extends AsyncTask<String, Void, String> {
     public static final int CONNECTION_TIMEOUT = 15000;
     private HttpURLConnection connection;
 
-    public HttpGetRequest(String REQUEST_METHOD) {
-        this.REQUEST_METHOD = REQUEST_METHOD;
-    }
-
     @Override
     protected String doInBackground(String... params) {
         String stringUrl = params[0];
