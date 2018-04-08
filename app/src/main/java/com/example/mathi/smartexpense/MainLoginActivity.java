@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +18,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+=======
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+>>>>>>> f5c171f324f326b7c3c1e605957e44bb923fc973
 
 public class MainLoginActivity extends AppCompatActivity {
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
     String result;
+
+    private EditText inputLogin;
+    private EditText inputPassword;
+    private Button connexionButton;
+    private TextView forgotPasswordLink;
+    private TextView register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
