@@ -29,7 +29,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_user_profile"
         android:text="Nom" />
@@ -44,7 +44,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_user_profile"
         android:text="Prénom" />
@@ -59,7 +59,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="textPostalAddress"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_address_profile"
         android:text="Adresse" />
@@ -74,7 +74,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="textPostalAddress"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_address_profile"
         android:text="Code postal" />
@@ -89,7 +89,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="textPostalAddress"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_city_profile"
         android:text="Ville" />
@@ -104,7 +104,7 @@
         android:paddingLeft="40dp"
         android:ems="10"
         android:inputType="phone"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_phone_profile"
         android:text="Téléphone" />
@@ -119,7 +119,7 @@
         android:ems="10"
         android:paddingLeft="40dp"
         android:inputType="textEmailAddress"
-        android:textColor="@color/whiteOpacity"
+        android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_email_profile"
         android:layout_marginBottom="10dp"
@@ -139,7 +139,7 @@
             android:background="@drawable/custome_button"
             android:text="Modifier mon mot de passe"
             android:textAllCaps="false"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:textSize="15sp" />
 
         <Button

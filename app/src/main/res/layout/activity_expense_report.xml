@@ -46,11 +46,10 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/custome_add_button"
-            android:textColor="@color/whiteOpacity"
+            android:textColor="@android:color/white"
             android:textSize="40sp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="60dp"
             android:text="+" />
-
     </LinearLayout>
 
 
