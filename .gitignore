@@ -9,4 +9,3 @@
 .externalNativeBuild
 gradle.properties
 .idea/
-/.idea/modules.xml

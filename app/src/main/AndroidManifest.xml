@@ -3,7 +3,6 @@
     package="com.example.mathi.smartexpense">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -19,11 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewERActivity"></activity>
-        <activity android:name=".PasswordActivity"></activity>
-        <activity android:name=".RefundTrackerActivity"></activity>
-        <activity android:name=".StatsActivity"></activity>
-        <activity android:name=".NewExpenseActivity"></activity>
+        <activity android:name=".NewERActivity" />
+        <activity android:name=".PasswordActivity" />
+        <activity android:name=".RefundTrackerActivity" />
+        <activity android:name=".StatsActivity" />
+        <activity android:name=".NewExpenseActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".ExpenseReportActivity" />
