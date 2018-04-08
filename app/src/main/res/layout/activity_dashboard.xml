@@ -37,6 +37,7 @@
 
             <ImageView
                 android:id="@+id/imageView2"
+                android:contentDescription="ic_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/user_cravate" />
@@ -57,7 +58,7 @@
                     android:id="@+id/labelFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="Prénom"
                     android:textStyle="bold"
                     android:textAllCaps="false"
@@ -67,9 +68,9 @@
                     android:id="@+id/labelLastName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:textStyle="bold"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="NOM"
                     android:textColor="#ffffff"
                     android:textSize="18sp" />
@@ -79,7 +80,7 @@
                 android:id="@+id/labelCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="Entreprise"
                 android:textStyle="italic"
                 android:textColor="#ffffff"
@@ -88,7 +89,7 @@
                 android:id="@+id/labelEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="p.nom@entreprise.com"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
@@ -108,7 +109,7 @@
             android:textSize="22sp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:drawableLeft="@drawable/ic_dashboard_er"
+            android:drawableStart="@drawable/ic_dashboard_er"
             android:text="Notes de frais" />
 
         <Button
@@ -124,7 +125,7 @@
             android:textSize="22sp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:drawableLeft="@drawable/ic_dashboard_refund"
+            android:drawableStart="@drawable/ic_dashboard_refund"
             android:text="Suivi des remboursements" />
 
         <Button
@@ -140,6 +141,6 @@
             android:textSize="22sp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:drawableLeft="@drawable/ic_dashboard_stats"
+            android:drawableStart="@drawable/ic_dashboard_stats"
             android:text="Statistiques" />
 </LinearLayout>
