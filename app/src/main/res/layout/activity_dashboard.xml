@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="Entreprise"
+                android:text="GRETA ENTREPRISE"
                 android:textStyle="italic"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
