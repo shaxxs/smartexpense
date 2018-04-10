@@ -23,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import org.w3c.dom.Text;
-f5c171f324f326b7c3c1e605957e44bb923fc973
 
 public class MainLoginActivity extends AppCompatActivity {
     final String LOGIN_PASS_KEY = "user_profile";
