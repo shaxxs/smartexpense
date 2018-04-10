@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SmartExpense.iml" filepath="$PROJECT_DIR$/SmartExpense.iml" />
       <module fileurl="file://D:\Users\Pierre\Documents\GitHub\smartexpense\SmartExpense.iml" filepath="D:\Users\Pierre\Documents\GitHub\smartexpense\SmartExpense.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/smartexpense.iml" filepath="$PROJECT_DIR$/.idea/smartexpense.iml" />
+      <module fileurl="file://C:\Users\mathi\AndroidStudioProjects\SmartExpense\.idea\smartexpense.iml" filepath="C:\Users\mathi\AndroidStudioProjects\SmartExpense\.idea\smartexpense.iml" />
     </modules>
   </component>
 </project>
