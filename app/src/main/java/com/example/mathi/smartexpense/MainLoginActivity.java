@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.mathi.smartexpense.network.HttpGetRequest;
-
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import android.widget.Toast;
-
 
 public class MainLoginActivity extends AppCompatActivity {
     final String LOGIN_PASS_KEY = "user_profile";
