@@ -34,13 +34,15 @@ public class MainLoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String myURL = "http://www.gyejacquot-pierre.fr/loggin.php?email=" +
-                        login.getText().toString() + "&mdp=" + pass.getText().toString();
+                //String myURL = "http://localhost/api/user?userEmail=" +
+                //        login.getText().toString() + "&userPassword=" + pass.getText().toString();
+                String myURL = "http://www.gyejacquot-pierre.fr/API/public/user?userEmail=" +
+                            login.getText().toString() + "&userPassword=" + pass.getText().toString();
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
                     result = getRequest.execute(myURL).get();
                     System.out.println("Retour HTTPGetRequest : " + result);
-                    if (result.equals("")){
+                    if (result.isEmpty()){
                         //afficher un message pour avertir de l'échec de la connexion
                         Context context = getApplicationContext();
                         CharSequence text = "Mot de Passe ou identifiant incorrect !";
