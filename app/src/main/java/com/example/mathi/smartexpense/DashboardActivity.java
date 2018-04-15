@@ -24,25 +24,48 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         /* récupération des données de la vue précédente */
-        Intent intent = getIntent();
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
         JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
-            Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
-            TextView firstName = findViewById(R.id.labelFirstName);
-            firstName.setText(userProfile.getString("userFirstName"));
-            TextView lastName = findViewById(R.id.labelLastName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (userProfile != null) {
+                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //Affichage des données du profil utilisateur
+        TextView firstName = findViewById(R.id.labelFirstName);
+        try {
+            if (userProfile != null) {
+                firstName.setText(userProfile.getString("userFirstName"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        TextView lastName = findViewById(R.id.labelLastName);
+        try {
+            assert userProfile != null;
             lastName.setText(userProfile.getString("userLastName"));
-            TextView labelEmail = findViewById(R.id.labelEmail);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        TextView labelEmail = findViewById(R.id.labelEmail);
+        try {
             labelEmail.setText(userProfile.getString("userEmail"));
         } catch (JSONException e) {
             e.printStackTrace();
+        }
 
 
-            //Gestion du clic sur le bouton Mes notes de frais
+        //Gestion du clic sur le bouton Mes notes de frais
             Button bouton = findViewById(R.id.expenseReportButton);
             bouton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,4 +99,3 @@ public class DashboardActivity extends AppCompatActivity {
             });
         }
     }
-}

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SmartExpense</string>
+    <string-array name="categoryNames">
+        <item>Autres</item>
+        <item>Restaurant</item>
+        <item>Hôtel</item>
+        <item>Trajet</item>
+        <item>Parking</item>
+        <item>Autoroute</item>
+    </string-array>
 </resources>
