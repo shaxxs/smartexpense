@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.mathi.smartexpense.model.ExpenseReportAdapter;
 import com.example.mathi.smartexpense.network.HttpGetRequest;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +20,6 @@ public class MainLoginActivity extends AppCompatActivity {
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
     String result;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
