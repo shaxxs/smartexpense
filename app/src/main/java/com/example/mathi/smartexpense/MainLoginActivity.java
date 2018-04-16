@@ -34,8 +34,6 @@ public class MainLoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //String myURL = "http://localhost/api/user?userEmail=" +
-                //        login.getText().toString() + "&userPassword=" + pass.getText().toString();
                 String myURL = "http://www.gyejacquot-pierre.fr/API/public/user?userEmail=" +
                             login.getText().toString() + "&userPassword=" + pass.getText().toString();
                 HttpGetRequest getRequest = new HttpGetRequest();

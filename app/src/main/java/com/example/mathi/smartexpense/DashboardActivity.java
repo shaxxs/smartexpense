@@ -41,7 +41,7 @@ public class DashboardActivity extends AppCompatActivity {
         TextView labelEmail= findViewById(R.id.labelEmail);
         try {
             firstName.setText(userProfile.getString("userFirstName"));
-            lastName.setText(userProfile.getString("userLastName"));
+            lastName.setText(userProfile.getString("userLastName").toUpperCase());
             labelEmail.setText(userProfile.getString("userEmail"));
         } catch (JSONException e) {
             e.printStackTrace();
