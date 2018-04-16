@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ExpenseReportActivity extends AppCompatActivity {
 
     private ListView liste;
@@ -44,22 +46,39 @@ public class ExpenseReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_report);
 
-     /* récupération des données de la vue précédente */
-    Intent intent = getIntent();
-    SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
-    String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
-    Log.v("shared_preferences", user_profile);
-    JSONObject userProfile = null;
-    try {
-        userProfile = new JSONObject(user_profile);
-        Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
+        Intent intent = getIntent();
+        /* récupération des données de la vue précédente */
+        SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
+        String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
+        Log.v("shared_preferences", user_profile);
+        JSONObject userProfile = null;
+        try {
+            userProfile = new JSONObject(user_profile);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (userProfile != null) {
+                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //Gestion du clic sur le bouton Ajouter une nouvelle note de frais
+        Button boutonAdd = findViewById(R.id.addERButton);
+        boutonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Lien vers la vue Ajouter une Note de Frais
+                Intent intentNewER = new Intent(ExpenseReportActivity.this, NewERActivity.class);
+                startActivity(intentNewER);
+            }
+        });
 
 /* Gestion du clic sur le bouton retour */
-        Button bouton = findViewById(R.id.returnButton);
-        bouton.setOnClickListener(new View.OnClickListener() {
+        Button boutonReturn = findViewById(R.id.returnButton);
+        boutonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             /* Lien vers la vue Tableau de bord */
