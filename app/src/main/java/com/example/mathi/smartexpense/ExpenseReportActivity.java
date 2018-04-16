@@ -99,7 +99,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
         });
 
 /* Gestion de la ListView */
-        String idUser = null;
+        String idUser = "";
         try {
             idUser = userProfile.getString("idUser");
         } catch (JSONException e) {
@@ -107,7 +107,8 @@ public class ExpenseReportActivity extends AppCompatActivity {
         }
         liste = findViewById(R.id.listExpenseReport);
         List<ExpenseReport> erList = new ArrayList<ExpenseReport>();
-        String myURL = "http://www.mathildeperson.fr/se/er.php?idUser="+idUser;
+        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
+        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();

@@ -10,15 +10,15 @@ public class Expense {
 
     private int idExpense;
     private String date;
-    private String beLabel;
+    private String label;
     private String beDetails;
     private double expenseTotal;
     private ImageView status;
 
-    public Expense(int idExpense, String date, String beLabel, String beDetails, double expenseTotal) {
+    public Expense(int idExpense, String date, String label, String beDetails, double expenseTotal) {
         this.idExpense = idExpense;
         this.date = date;
-        this.beLabel = beLabel;
+        this.label = label;
         this.beDetails = beDetails;
         this.expenseTotal = expenseTotal;
     }
@@ -39,12 +39,12 @@ public class Expense {
         this.date = date;
     }
 
-    public String getBeLabel() {
-        return beLabel;
+    public String getLabel() {
+        return label;
     }
 
-    public void setBeLabel(String beLabel) {
-        this.beLabel = beLabel;
+    public void setLabel(String beLabel) {
+        this.label = beLabel;
     }
 
     public String getBeDetails() {

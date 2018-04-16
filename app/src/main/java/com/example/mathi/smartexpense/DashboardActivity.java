@@ -53,7 +53,7 @@ public class DashboardActivity extends AppCompatActivity {
         TextView lastName = findViewById(R.id.labelLastName);
         try {
             assert userProfile != null;
-            lastName.setText(userProfile.getString("userLastName"));
+            lastName.setText(userProfile.getString("userLastName").toUpperCase());
         } catch (JSONException e) {
             e.printStackTrace();
         }

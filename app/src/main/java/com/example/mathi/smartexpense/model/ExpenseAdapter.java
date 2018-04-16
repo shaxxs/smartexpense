@@ -47,9 +47,9 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         //il ne reste plus qu'à remplir notre vue
         viewHolder.dateExpense.setText(e.getDate());
-        viewHolder.categoryExpense.setText(e.getBeLabel());
+        viewHolder.categoryExpense.setText(e.getLabel());
         viewHolder.commentExpense.setText(e.getBeDetails());
-        viewHolder.amountExpense.setText(String.valueOf(e.getExpenseTotal()));
+        viewHolder.amountExpense.setText(String.valueOf(e.getExpenseTotal())+"€");
 
         return convertView;
     }
