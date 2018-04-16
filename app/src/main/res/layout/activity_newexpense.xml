@@ -190,10 +190,12 @@
             android:layout_marginLeft="20dp"
             android:background="@drawable/custome_button"
             android:drawableStart="@drawable/ic_return_button"
-            android:paddingLeft="15dp" />
+            android:paddingLeft="15dp"
+            android:drawableLeft="@drawable/ic_return_button" />
 
         <Button
             android:id="@+id/btnAddProof"
+            android:layout_width="80dp"
             android:layout_height="65dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
