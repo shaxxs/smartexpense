@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="370dp"
+    android:layout_marginTop="10dp"
+    android:layout_height="60dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/blackOpacityButton"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/dateExpenseReport"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="#ffffff"
+        android:text="Date" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cityExpenseReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Ville" />
+
+        <TextView
+            android:id="@+id/commentExpenseReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Commentaire" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/expenseTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:paddingRight="20dp"
+        android:text="€" />
+</LinearLayout>

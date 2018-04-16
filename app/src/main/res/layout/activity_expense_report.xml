@@ -21,10 +21,10 @@
 
     <ListView
         android:id="@+id/listExpenseReport"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
+        android:layout_gravity="center_horizontal"
         android:layout_height="349dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/blackOpacityButton"></ListView>
+        android:layout_marginBottom="10dp"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +38,6 @@
             android:layout_marginLeft="20dp"
             android:paddingLeft="15dp"
             android:background="@drawable/custome_button"
-            android:drawableStart="@drawable/ic_return_button"
             android:drawableLeft="@drawable/ic_return_button" />
 
         <Button
