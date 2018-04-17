@@ -24,24 +24,41 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         /* récupération des données de la vue précédente */
-        Intent intent = getIntent();
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
         JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
-            Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (userProfile != null) {
+                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        TextView firstName= findViewById(R.id.labelFirstName);
-        TextView lastName= findViewById(R.id.labelLastName);
-        TextView labelEmail= findViewById(R.id.labelEmail);
+        //Affichage des données du profil utilisateur
+        TextView firstName = findViewById(R.id.labelFirstName);
         try {
-            firstName.setText(userProfile.getString("userFirstName"));
+            if (userProfile != null) {
+                firstName.setText(userProfile.getString("userFirstName"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        TextView lastName = findViewById(R.id.labelLastName);
+        try {
+            assert userProfile != null;
             lastName.setText(userProfile.getString("userLastName").toUpperCase());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        TextView labelEmail = findViewById(R.id.labelEmail);
+        try {
             labelEmail.setText(userProfile.getString("userEmail"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -58,16 +75,27 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        /* Gestion du clic sur le bouton Suivi remboursements */
-        Button bouton1 = (Button) findViewById(R.id.refundTrackerButton);
-        bouton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-          /* Lien vers la vue Suivi des remboursements */
-                Intent intent2 = new Intent(DashboardActivity.this, RefundTrackerActivity.class);
-                startActivity(intent2);
-            }
-        });
+        //Gestion du clic sur le bouton Mes notes de frais
+            Button bouton = findViewById(R.id.expenseReportButton);
+            bouton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Lien vers la vue Mes notes de frais
+                    Intent intent1 = new Intent(DashboardActivity.this, ExpenseReportActivity.class);
+                    startActivity(intent1);
+                }
+            });
+
+            // Gestion du clic sur le bouton Suivi remboursements
+            Button bouton1 = findViewById(R.id.refundTrackerButton);
+            bouton1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Lien vers la vue Suivi des remboursements
+                    Intent intent2 = new Intent(DashboardActivity.this, RefundTrackerActivity.class);
+                    startActivity(intent2);
+                }
+            });
 
         /* Gestion du clic sur le bouton Statistiques */
         Button bouton2 = (Button) findViewById(R.id.statButton);
@@ -80,4 +108,3 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });          
     }
-}

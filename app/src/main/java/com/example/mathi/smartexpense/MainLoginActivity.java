@@ -42,7 +42,7 @@ public class MainLoginActivity extends AppCompatActivity {
                 try {
                     result = getRequest.execute(myURL).get();
                     System.out.println("Retour HTTPGetRequest : " + result);
-                    if (result.isEmpty()){
+                    if (result.equals("error")){
                         //afficher un message pour avertir de l'échec de la connexion
                         Context context = getApplicationContext();
                         CharSequence text = "Mot de Passe ou identifiant incorrect !";

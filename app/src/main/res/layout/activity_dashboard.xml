@@ -73,7 +73,8 @@
                     android:gravity="start"
                     android:text="NOM"
                     android:textColor="#ffffff"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginLeft="8dp" />
 
             </LinearLayout>
             <TextView
