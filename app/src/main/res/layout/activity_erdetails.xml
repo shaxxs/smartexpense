@@ -25,17 +25,6 @@
         android:layout_marginBottom="6dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:layout_weight="1"
-            android:background="@drawable/custome_button"
-            android:textColor="@android:color/white"
-            android:layout_margin="5dp"
-            android:text="Sauver" />
 
         <Button
             android:id="@+id/submitButton"
@@ -136,7 +125,7 @@
             android:layout_height="55dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/custome_button"
-            android:drawableStart="@drawable/ic_return_button"
+            android:drawableLeft="@drawable/ic_return_button"
             android:paddingLeft="15dp" />
 
         <Button
