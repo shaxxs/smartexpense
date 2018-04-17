@@ -71,21 +71,6 @@ public class ERDetailsActivity extends AppCompatActivity {
             }
         });
 
-/* Gestion du clic sur le bouton Sauver */
-        Button saveButton = (Button) findViewById(R.id.saveButton);
-        /*if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
-            saveButton.setVisibility(View.GONE);
-        } else {
-            saveButton.setVisibility(View.VISIBLE);
-        }*/
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /* Création de la note de frais et des dépenses dans la db */
-
-            }
-        });
-
 /* Gestion du clic sur le bouton Soumettre */
         Button submitButton = (Button) findViewById(R.id.submitButton);
         /*if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
@@ -119,7 +104,7 @@ public class ERDetailsActivity extends AppCompatActivity {
 
         TextView status = (TextView) findViewById(R.id.ERStatus);
         if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
-            status.setText(intent.getStringExtra("expense_report_submission_date"));
+            status.setText("Soumise le "+intent.getStringExtra("expense_report_submission_date"));
         } else {
             status.setText("Non soumise");
         }

@@ -104,9 +104,9 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         /* Si c'est un autre frais */
-        } /*else {
+        } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
-          /*  button2.setVisibility(View.GONE);
+            button2.setVisibility(View.GONE);
             //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+Integer.parseInt(intent3.getStringExtra("expense_id"));
             String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+intent3.getIntExtra("expense_id", 0);
             HttpGetRequest getRequest = new HttpGetRequest();
@@ -144,6 +144,6 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 }

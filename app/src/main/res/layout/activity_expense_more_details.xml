@@ -194,7 +194,7 @@
             android:layout_height="55dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/custome_button"
-            android:drawableStart="@drawable/ic_return_button"
+            android:drawableLeft="@drawable/ic_return_button"
             android:paddingLeft="15dp" />
 
         <Button
@@ -206,7 +206,7 @@
             android:textColor="#ffffff"
             android:textAllCaps="false"
             android:textSize="18sp"
-            android:text="Justificatif(s)"
+            android:text="Justificatif"
             />
     </LinearLayout>
 </LinearLayout>
