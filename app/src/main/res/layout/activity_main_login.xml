@@ -50,22 +50,12 @@
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="259dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:text="Mot de passe oublié ?" />
-
     <Button
         android:id="@+id/btnConnexion"
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/custome_button"
         android:textColor="@android:color/white"
         android:textSize="21sp"
