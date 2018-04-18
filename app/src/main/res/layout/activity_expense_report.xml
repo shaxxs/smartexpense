@@ -24,12 +24,9 @@
         android:layout_width="370dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="349dp"
-<<<<<<< HEAD
         android:layout_marginBottom="10dp"
         android:background="@color/blackOpacityButton" />
-=======
-        android:layout_marginBottom="10dp"></ListView>
->>>>>>> 54928fbdb03d3079661b3ef65473376504a9b046
+
 
     <LinearLayout
         android:layout_width="match_parent"
