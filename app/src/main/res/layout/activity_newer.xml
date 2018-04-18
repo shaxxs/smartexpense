@@ -42,6 +42,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:paddingLeft="20dp"
+        android:textColorHint="#ffffff"
         android:ems="10"
         android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
@@ -68,6 +69,7 @@
         android:gravity=""
         android:paddingLeft="20dp"
         android:ems="10"
+        android:textColorHint="#ffffff"
         android:textColor="@android:color/white"
         android:background="@drawable/custome_input_profile"
         android:drawableLeft="@drawable/ic_comments" />
@@ -107,7 +109,6 @@
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:text="Ajouter une note de frais" />
-
 
     </LinearLayout>
 

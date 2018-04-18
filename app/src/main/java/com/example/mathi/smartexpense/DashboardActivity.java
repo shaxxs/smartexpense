@@ -53,7 +53,7 @@ public class DashboardActivity extends AppCompatActivity {
         TextView lastName = findViewById(R.id.labelLastName);
         try {
             assert userProfile != null;
-            lastName.setText(userProfile.getString("userLastName"));
+            lastName.setText(userProfile.getString("userLastName").toUpperCase());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,18 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        /* Gestion du clic sur le bouton Mes notes de frais */
-        Button bouton = (Button) findViewById(R.id.expenseReportButton);
-        bouton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* Lien vers la vue Mes notes de frais */
-                Intent intent1 = new Intent(DashboardActivity.this, ExpenseReportActivity.class);
-                startActivity(intent1);
-            }
-        });
-
+      
         //Gestion du clic sur le bouton Mes notes de frais
         Button boutonNF = findViewById(R.id.expenseReportButton);
         boutonNF.setOnClickListener(new View.OnClickListener() {

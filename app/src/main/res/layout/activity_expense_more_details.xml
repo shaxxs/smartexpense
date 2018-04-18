@@ -23,34 +23,8 @@
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="6dp"
-        android:background="@color/blackOpacityButton"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/expenseDetailsDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="DATE"
-            android:textColor="#ffffff" />
-
-        <TextView
-            android:id="@+id/expenseDetailsCity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="VILLE"
-            android:textColor="#ffffff" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="6dp"
+        android:layout_marginTop="10dp"
         android:background="@color/blackOpacityButton"
         android:orientation="horizontal">
 
@@ -211,6 +185,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
         <Button
@@ -219,7 +194,7 @@
             android:layout_height="55dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/custome_button"
-            android:drawableStart="@drawable/ic_return_button"
+            android:drawableLeft="@drawable/ic_return_button"
             android:paddingLeft="15dp" />
 
         <Button
@@ -231,7 +206,7 @@
             android:textColor="#ffffff"
             android:textAllCaps="false"
             android:textSize="18sp"
-            android:text="Justificatif(s)"
+            android:text="Justificatif"
             />
     </LinearLayout>
 </LinearLayout>

@@ -45,7 +45,6 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
  /** RECUPERATION DONNEES VUE PRECEDENTE **/
 
-        /* récupération des données de la vue précédente */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
@@ -62,6 +61,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
 /** GESTION DU CHOIX DE LA DATE **/
 
@@ -113,6 +113,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
         //Remplissage de la spinner avec choix multiple
         final Spinner spinner = (Spinner) findViewById(R.id.clientsSpinner);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryNames, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
