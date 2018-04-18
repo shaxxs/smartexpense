@@ -15,30 +15,32 @@
         android:background="@color/blue"
         android:text="NOUVELLE NOTE DE FRAIS" />
 
-    <EditText
-        android:id="@+id/date"
-        android:hint="Date*"
-        android:inputType="date"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:textColorHint="#ffffff"
-        android:layout_gravity="center_horizontal"
-        android:gravity=""
-        android:paddingLeft="20dp"
-        android:ems="10"
-        android:textColor="@android:color/white"
-        android:background="@drawable/custome_input_profile"
-        android:drawableLeft="@drawable/ic_calendar" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:background="@drawable/custome_input_profile"
+            android:ems="10"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:paddingLeft="20dp"
+            android:hint="Choisir la date..."
+            android:textColorHint="#FFF"
+            android:paddingStart="20dp" />
+
 
     <EditText
+        android:id="@+id/city"
         android:hint="Ville*"
         android:inputType="text"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:gravity=""
+        android:gravity="center"
         android:paddingLeft="20dp"
         android:textColorHint="#ffffff"
         android:ems="10"
@@ -49,7 +51,7 @@
     <Spinner
         android:id="@+id/clientsSpinner"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="21dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
@@ -93,8 +95,8 @@
             android:layout_marginLeft="20dp"
             android:paddingLeft="15dp"
             android:background="@drawable/custome_button"
-            android:drawableLeft="@drawable/ic_return_button"
-            />
+            android:drawableStart="@drawable/ic_return_button"
+            android:drawableLeft="@drawable/ic_return_button" />
 
         <Button
             android:id="@+id/btnAddExpense"
@@ -106,7 +108,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            android:text="Ajouter une dépense" />
+            android:text="Ajouter une note de frais" />
 
     </LinearLayout>
 
