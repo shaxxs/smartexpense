@@ -24,22 +24,22 @@ public class ExpenseMoreDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_more_details);
 
-        final Intent intent1 = getIntent();
+        final Intent intentPreviousPage = getIntent();
 
 /* Gestion du clic sur le bouton Retour */
-        Button button1 = (Button) findViewById(R.id.returnButtonExpenseMoreDetails);
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button buttonReturn = (Button) findViewById(R.id.returnButtonExpenseMoreDetails);
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* Lien vers la vue Dépense - Détails */
-                Intent intent = new Intent(ExpenseMoreDetailsActivity.this, ExpenseDetailsActivity.class);
-                startActivity(intent);
+                /* Lien vers la vue Note de frais */
+                Intent intentReturn = new Intent(ExpenseMoreDetailsActivity.this, ExpenseReportActivity.class);
+                startActivity(intentReturn);
             }
         });
 
 /* Gestion du clic sur le bouton Justificatif */
-        Button button2 = (Button) findViewById(R.id.proofButton);
-        button2.setOnClickListener(new View.OnClickListener() {
+        Button buttonProof = (Button) findViewById(R.id.proofButton);
+        buttonProof.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -57,7 +57,7 @@ public class ExpenseMoreDetailsActivity extends AppCompatActivity {
 
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
             //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+Integer.parseInt(intent3.getStringExtra("expense_id"));
-            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intent1.getIntExtra("expense_id", 0);
+            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intentPreviousPage.getIntExtra("expense_id", 0);
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();

@@ -81,7 +81,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* Mise à jour de la note de frais dans la db : création de la date de soumission */
+                /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
                 //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
                 String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
                 HttpGetRequest getRequest = new HttpGetRequest();

@@ -75,27 +75,16 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        //Gestion du clic sur le bouton Mes notes de frais
-            Button bouton = findViewById(R.id.expenseReportButton);
-            bouton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Lien vers la vue Mes notes de frais
-                    Intent intent1 = new Intent(DashboardActivity.this, ExpenseReportActivity.class);
-                    startActivity(intent1);
-                }
-            });
-
-            // Gestion du clic sur le bouton Suivi remboursements
-            Button bouton1 = findViewById(R.id.refundTrackerButton);
-            bouton1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Lien vers la vue Suivi des remboursements
-                    Intent intent2 = new Intent(DashboardActivity.this, RefundTrackerActivity.class);
-                    startActivity(intent2);
-                }
-            });
+        // Gestion du clic sur le bouton Suivi remboursements
+        Button bouton1 = findViewById(R.id.refundTrackerButton);
+        bouton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Lien vers la vue Suivi des remboursements
+                Intent intent2 = new Intent(DashboardActivity.this, RefundTrackerActivity.class);
+                startActivity(intent2);
+            }
+        });
 
         /* Gestion du clic sur le bouton Statistiques */
         Button bouton2 = (Button) findViewById(R.id.statButton);
@@ -106,5 +95,6 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent3 = new Intent(DashboardActivity.this, StatsActivity.class);
                 startActivity(intent3);
             }
-        });          
+        });
     }
+}
