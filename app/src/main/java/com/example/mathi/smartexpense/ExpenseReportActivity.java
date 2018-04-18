@@ -46,7 +46,6 @@ public class ExpenseReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_report);
 
-        Intent intent = getIntent();
         /* récupération des données de la vue précédente */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
@@ -65,9 +64,9 @@ public class ExpenseReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //Gestion du clic sur le bouton Ajouter une nouvelle note de frais
-        Button boutonAdd = findViewById(R.id.addERButton);
-        boutonAdd.setOnClickListener(new View.OnClickListener() {
+//Gestion du clic sur le bouton Ajouter une nouvelle note de frais
+        Button buttonAdd = findViewById(R.id.addERButton);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Lien vers la vue Ajouter une Note de Frais
@@ -77,26 +76,16 @@ public class ExpenseReportActivity extends AppCompatActivity {
         });
 
 /* Gestion du clic sur le bouton retour */
-        Button boutonReturn = findViewById(R.id.returnButton);
-        boutonReturn.setOnClickListener(new View.OnClickListener() {
+        Button buttonReturn = findViewById(R.id.returnButton);
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             /* Lien vers la vue Tableau de bord */
-                Intent intent = new Intent(ExpenseReportActivity.this, DashboardActivity.class);
-                startActivity(intent);
+                Intent intentReturn = new Intent(ExpenseReportActivity.this, DashboardActivity.class);
+                startActivity(intentReturn);
             }
         });
 
-/* Gestion du clic sur le bouton ajouter une note */
-        Button bouton2 = findViewById(R.id.addERButton);
-        bouton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            /* Lien vers la vue Nouvelle note de frais */
-                Intent intent2 = new Intent(ExpenseReportActivity.this, NewERActivity.class);
-                startActivity(intent2);
-            }
-        });
 
 /* Gestion de la ListView */
         String idUser = "";
@@ -139,12 +128,12 @@ public class ExpenseReportActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView,
                                     View view, int position, long id) {
 
-                Intent intent3 = new Intent(ExpenseReportActivity.this, ERDetailsActivity.class);
-                intent3.putExtra(EXPENSE_REPORT_CODE, adapter.getItem(position).getCode());
-                intent3.putExtra(EXPENSE_REPORT_DATE, adapter.getItem(position).getDate());
-                intent3.putExtra(EXPENSE_REPORT_CITY, adapter.getItem(position).getCity());
-                intent3.putExtra(EXPENSE_REPORT_SUBMISSION_DATE, adapter.getItem(position).getSubmissionDate());
-                startActivity(intent3);
+                Intent intentNextPage = new Intent(ExpenseReportActivity.this, ERDetailsActivity.class);
+                intentNextPage.putExtra(EXPENSE_REPORT_CODE, adapter.getItem(position).getCode());
+                intentNextPage.putExtra(EXPENSE_REPORT_DATE, adapter.getItem(position).getDate());
+                intentNextPage.putExtra(EXPENSE_REPORT_CITY, adapter.getItem(position).getCity());
+                intentNextPage.putExtra(EXPENSE_REPORT_SUBMISSION_DATE, adapter.getItem(position).getSubmissionDate());
+                startActivity(intentNextPage);
             }
         });
     }

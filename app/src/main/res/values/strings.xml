@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SmartExpense</string>
-    <string-array name="categoryNames">
+    <string-array name="categoryLabels">
         <item>Autres</item>
         <item>Restaurant</item>
         <item>Hôtel</item>

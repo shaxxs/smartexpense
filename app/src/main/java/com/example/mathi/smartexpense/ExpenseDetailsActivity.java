@@ -21,41 +21,41 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 
     final String EXPENSE_LABEL = "expense_label";
     final String EXPENSE_ID = "expense_id";
-    private Button button2;
+    private Button buttonDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_details);
 
-        final Intent intent3 = getIntent();
+        final Intent intentPreviousPage = getIntent();
 
 /* Gestion du clic sur le bouton Retour */
-        Button button1 = (Button) findViewById(R.id.returnButtonExpenseDetails);
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button buttonReturn = (Button) findViewById(R.id.returnButtonExpenseDetails);
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* Lien vers la vue Note de frais - Détails */
-                Intent intent = new Intent(ExpenseDetailsActivity.this, ERDetailsActivity.class);
-                startActivity(intent);
+                /* Lien vers la vue Note de frais */
+                Intent intentReturn = new Intent(ExpenseDetailsActivity.this, ExpenseReportActivity.class);
+                startActivity(intentReturn);
             }
         });
 
 /* Gestion du clic sur le bouton Détails */
-        button2 = (Button) findViewById(R.id.detailsButton);
-        button2.setOnClickListener(new View.OnClickListener() {
+        buttonDetails = (Button) findViewById(R.id.detailsButton);
+        buttonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* Lien vers la vue Dépense - Détails */
-                Intent intent2 = new Intent(ExpenseDetailsActivity.this, ExpenseMoreDetailsActivity.class);
-                intent2.putExtra(EXPENSE_ID, intent3.getIntExtra("expense_id", 0));
-                startActivity(intent2);
+                Intent intentDetails = new Intent(ExpenseDetailsActivity.this, ExpenseMoreDetailsActivity.class);
+                intentDetails.putExtra(EXPENSE_ID, intentPreviousPage.getIntExtra("expense_id", 0));
+                startActivity(intentDetails);
             }
         });
 
 /* Déclaration des TextView de la vue */
         TextView label = (TextView) findViewById(R.id.expenseCategory);
-        label.setText(intent3.getStringExtra("expense_label"));
+        label.setText(intentPreviousPage.getStringExtra("expense_label"));
         TextView date = (TextView) findViewById(R.id.expenseDate);
         TextView status = (TextView) findViewById(R.id.expenseStatus);
         TextView validationDate = (TextView) findViewById(R.id.expenseValidationDate);
@@ -65,9 +65,9 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
         /* Si c'est un trajet */
-        if (intent3.getStringExtra("expense_label").equals("Trajet")) {
+        if (intentPreviousPage.getStringExtra("expense_label").equals("Trajet")) {
             //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+Integer.parseInt(intent3.getStringExtra("expense_id"));
-            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intent3.getIntExtra("expense_id", 0);
+            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intentPreviousPage.getIntExtra("expense_id", 0);
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
@@ -106,9 +106,9 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         /* Si c'est un autre frais */
         } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
-            button2.setVisibility(View.GONE);
+            buttonDetails.setVisibility(View.GONE);
             //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+Integer.parseInt(intent3.getStringExtra("expense_id"));
-            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+intent3.getIntExtra("expense_id", 0);
+            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+intentPreviousPage.getIntExtra("expense_id", 0);
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();

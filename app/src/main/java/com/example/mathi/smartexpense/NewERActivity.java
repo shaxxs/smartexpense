@@ -24,7 +24,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newexpense);
+        setContentView(R.layout.activity_newer);
 
         /* récupération des données de la vue précédente */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
@@ -44,18 +44,14 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             e.printStackTrace();
         }
 
-        //Remplissage de la spinner avec choix multiple
+        /*//Remplissage de la spinner avec choix multiple
         Spinner spinner = (Spinner) findViewById(R.id.categorySpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryNames, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-
-
-
+        spinner.setAdapter(adapter);*/
 
         /* Gestion du clic sur le bouton retour */
         Button boutonReturn = findViewById(R.id.returnButton);
@@ -81,7 +77,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         // Another interface callback
     }
 
-    Spinner spinner = (Spinner) findViewById(R.id.categorySpinner);
-    spinner.setOnItemSelectedListener(this);
+    //Spinner spinner = (Spinner) findViewById(R.id.categorySpinner);
+    //spinner.setOnItemSelectedListener(this);
 }
 
