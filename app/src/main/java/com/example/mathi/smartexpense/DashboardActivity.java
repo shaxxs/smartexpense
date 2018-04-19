@@ -35,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
         try {
             if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+                Log.v("Data SharedPreferences", userProfile.getString("userLastName") + "/" + userProfile.getString("userFirstName"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
