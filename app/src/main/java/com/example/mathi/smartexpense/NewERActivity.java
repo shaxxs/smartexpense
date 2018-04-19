@@ -19,13 +19,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.mathi.smartexpense.network.HttpGetRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +38,11 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
-    String result;
+    String result,result2;
+    JSONObject userProfile = null;
+    int idUser;
+    Spinner clientsSpinner;
+    String customerSelected;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -43,12 +50,14 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newer);
 
+        //Gestion de la liste déroulante
+        addListenerOnSpinnerItemSelection();
+
  /** RECUPERATION DONNEES VUE PRECEDENTE **/
 
-        SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
-        String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
+        final SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
+        final String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
-        JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
         } catch (JSONException e) {
@@ -56,7 +65,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         }
         try {
             if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
+                Log.v("Data SharedPreferences", userProfile.getString("userLastName") + "/" + userProfile.getString("userFirstName"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -85,8 +94,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                thedate.setText(dayOfMonth + "/"
-                                        + (monthOfYear + 1) + "/" + year);
+                                thedate.setText(year + "-"
+                                        + (monthOfYear + 1) + "-" + dayOfMonth);
                             }
 
                         }, mYear, mMonth, mDay);
@@ -98,7 +107,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 /** GESTION DU CHOIX CLIENT **/
 
         //Appel de la fonction pour récupérer la liste de tous les clients
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/customer";
+        String myURL = "http://www.gyejacquot-pierre.fr/API/public/customers";
+//        String myURL = "http://localhost/API/public/customers";
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             result = getRequest.execute(myURL).get();
@@ -107,15 +117,14 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println("Retour HTTPGetRequest : " + result);
-//        $customers=json_decode(result);
+        System.out.println("Retour HTTPGetRequest Customer: " + result);
 
 
         //Remplissage de la spinner avec choix multiple
         final Spinner spinner = (Spinner) findViewById(R.id.clientsSpinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryNames, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryLabels, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -132,26 +141,32 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 String ERDate= (String) thedate.getText();
                 String city = String.valueOf(cityText.getText());
-                String customer = String.valueOf(spinner.getSelectedItem());
+                int customer = 1;
+//                int customer = (int) spinner.getSelectedItem();
                 String comments = String.valueOf(commentsText.getText());
+                try {
+                    idUser = userProfile.getInt("idUser");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 //Appel de la fonction pour créer une note de frais
-                String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenseReport";
+                String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
+//                String myURL2 = "http://localhost/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
-                    result = getRequest.execute(myURL).get();
+                    result2 = getRequest.execute(myURL2).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Retour HTTPGetRequest : " + result);
-//        $customers=json_decode(result);
+                System.out.println("Retour HTTPGetRequest ExpenseReport : " + result2);
 
                 /* lien vers la vue ajouter une dépense */
                 Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
                 /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
-                //intent.putExtra(expenseReportCode);
+                //intent.putExtra(result2);
                 startActivity(intent);
             }
         });
@@ -171,11 +186,17 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-    //gestion du clic sur la spinner pour la categorie
+    //Gestion de la sélection sur la liste déroulante
+    private void addListenerOnSpinnerItemSelection() {
+        clientsSpinner = (Spinner) findViewById(R.id.clientsSpinner);
+        clientsSpinner.setOnItemSelectedListener(this);
+    }
+
+//Gestion de l'item sélectionné dans la liste déroulante
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
+        customerSelected = adapterView.getItemAtPosition(i).toString();
+        System.out.println("Client selectionne: "+customerSelected);
     }
 
     @Override

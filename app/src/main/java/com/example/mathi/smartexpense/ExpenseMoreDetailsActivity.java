@@ -56,8 +56,8 @@ public class ExpenseMoreDetailsActivity extends AppCompatActivity {
         TextView km = (TextView) findViewById(R.id.expenseKm);
 
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
-            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+Integer.parseInt(intent3.getStringExtra("expense_id"));
-            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intentPreviousPage.getIntExtra("expense_id", 0);
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+intentPreviousPage.getIntExtra("expense_id", 0);
+//            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intentPreviousPage.getIntExtra("expense_id", 0);
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
