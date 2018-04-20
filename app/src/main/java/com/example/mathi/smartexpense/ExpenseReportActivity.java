@@ -98,8 +98,8 @@ public class ExpenseReportActivity extends AppCompatActivity {
         liste = findViewById(R.id.listExpenseReport);
         List<ExpenseReport> erList = new ArrayList<ExpenseReport>();
         // On récupère les données des notes de frais de l'utilisateur
-        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
-        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
+        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
+        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();
@@ -114,8 +114,8 @@ public class ExpenseReportActivity extends AppCompatActivity {
                     comment = obj.getString("expenseReportComment");
                 }
                 // On récupère le montant total des dépenses de la note de frais
-                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
-                String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
+                String myURL2 = "http://www.gyejacquot-pierre.fr/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
+                //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
                 HttpGetRequest getRequest2 = new HttpGetRequest();
                 String result2 = "";
                 try {
