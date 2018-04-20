@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartExpense</string>
+    <string name="app_name">Smart Expense</string>
     <string-array name="categoryLabels">
         <item>Autres</item>
         <item>Restaurant</item>
-        <item>Hôtel</item>
+        <item>Hotel</item>
         <item>Trajet</item>
         <item>Parking</item>
         <item>Autoroute</item>
+    </string-array>
+    <string-array name="months">
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
     </string-array>
 </resources>

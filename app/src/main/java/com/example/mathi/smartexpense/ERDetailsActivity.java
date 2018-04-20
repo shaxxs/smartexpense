@@ -1,6 +1,7 @@
 package com.example.mathi.smartexpense;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mathi.smartexpense.model.Expense;
 import com.example.mathi.smartexpense.model.ExpenseAdapter;
@@ -27,22 +29,38 @@ import java.util.concurrent.ExecutionException;
 
 public class ERDetailsActivity extends AppCompatActivity {
 
+    final String FILE_EXPENSE_REPORT = "file_expense_report";
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String EXPENSE_REPORT_DATE = "expense_report_date";
     final String EXPENSE_REPORT_CITY = "expense_report_city";
     final String EXPENSE_REPORT_SUBMISSION_DATE = "expense_report_submission_date";
     private ListView liste;
-    ExpenseAdapter adapter;
+    private ExpenseAdapter adapter;
     final String EXPENSE_LABEL = "expense_label";
     final String EXPENSE_ID = "expense_id";
-
+    private TextView status;
+    SharedPreferences sharedPreferencesER;
+    private String erDate;
+    private String erCity;
+    private int erCode;
+    private String erSubmissionDate;
+    final String REFUND_TRACKER = "refund_tracker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_erdetails);
 
-        final Intent intent = getIntent();
+        status = (TextView) findViewById(R.id.ERStatus);
+
+        // on récupère les données de notre fichier SharedPreferences
+        sharedPreferencesER = this.getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
+        if (sharedPreferencesER.contains(EXPENSE_REPORT_CODE) && sharedPreferencesER.contains(EXPENSE_REPORT_CITY) && sharedPreferencesER.contains(EXPENSE_REPORT_DATE)) {
+            erDate = sharedPreferencesER.getString(EXPENSE_REPORT_DATE, null);
+            erCity = sharedPreferencesER.getString(EXPENSE_REPORT_CITY, null);
+            erCode = sharedPreferencesER.getInt(EXPENSE_REPORT_CODE, 0);
+            erSubmissionDate = sharedPreferencesER.getString(EXPENSE_REPORT_SUBMISSION_DATE, null);
+        }
 
 /* Gestion du clic sur le bouton Retour */
         Button returnButton = (Button) findViewById(R.id.returnButtonERDetails);
@@ -50,73 +68,87 @@ public class ERDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 /* Lien vers la vue Notes de frais */
-                Intent intent2 = new Intent(ERDetailsActivity.this, ExpenseReportActivity.class);
-                startActivity(intent2);
+                Intent intentReturn = new Intent(ERDetailsActivity.this, ExpenseReportActivity.class);
+                startActivity(intentReturn);
             }
         });
 
 /* Gestion du clic sur le bouton Ajouter une dépense */
         Button addButton = (Button) findViewById(R.id.addExpenseButton);
-        /*if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
+        // si la note a déjà été soumise, on cache le bouton Ajouter une dépense
+        if (!erSubmissionDate.equals("null")) {
             addButton.setVisibility(View.GONE);
         } else {
             addButton.setVisibility(View.VISIBLE);
-        }*/
+        }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* Lien vers la vue Nouvelle dépense */
-                Intent intent3 = new Intent(ERDetailsActivity.this, NewExpenseActivity.class);
-                startActivity(intent3);
+                Intent intentAddExpense = new Intent(ERDetailsActivity.this, NewExpenseActivity.class);
+                startActivity(intentAddExpense);
             }
         });
 
 /* Gestion du clic sur le bouton Soumettre */
-        Button submitButton = (Button) findViewById(R.id.submitButton);
-        /*if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
+        final Button submitButton = (Button) findViewById(R.id.submitButton);
+        // si la note a déjà été soumise, on cache le bouton Soumettre
+        if (!erSubmissionDate.equals("null")) {
             submitButton.setVisibility(View.GONE);
         } else {
-            saveButton.setVisibility(View.VISIBLE);
-        }*/
+            submitButton.setVisibility(View.VISIBLE);
+        }
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
                 //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
-                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
+                String submissionDate = "";
+                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
-                    getRequest.execute(myURL).get();
+                    String result =getRequest.execute(myURL).get();
+                    System.out.println("Retour HTTPGetRequest : " + result);
+                    // On récupère la date de soumission qu'on vient de créer pour l'injecter dans le TextView Soumise le ...
+                    if (!result.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Note de frais soumise",Toast.LENGTH_SHORT).show();
+                        JSONObject obj = new JSONObject(result);
+                        submissionDate = obj.getString("submissionDate");
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                status.setText("Soumise le "+submissionDate);
+                // On cache le bouton Soumettre
+                submitButton.setVisibility(View.GONE);
             }
         });
 
 /* Récupération des données de la page précédente et injection dans les TextView de la vue */
         TextView code = (TextView) findViewById(R.id.numberER);
-        code.setText("Note de frais "+intent.getStringExtra("expense_report_code"));
+        code.setText("Note de frais n°"+erCode);
 
         TextView date = (TextView) findViewById(R.id.ERDate);
-        date.setText(intent.getStringExtra("expense_report_date"));
+        date.setText(erDate);
 
-        TextView status = (TextView) findViewById(R.id.ERStatus);
-        if (!intent.getStringExtra("expense_report_submission_date").equals("null")) {
-            status.setText("Soumise le "+intent.getStringExtra("expense_report_submission_date"));
-        } else {
+        if (erSubmissionDate.equals("null")) {
             status.setText("Non soumise");
+        } else {
+            status.setText("Soumise le "+erSubmissionDate);
         }
 
         TextView city = (TextView) findViewById(R.id.ERCity);
-        city.setText(intent.getStringExtra("expense_report_city"));
+        city.setText(erCity);
 
 /* Gestion de la ListView */
         liste = findViewById(R.id.listERDetails);
         List<Expense> eList = new ArrayList<Expense>();
-        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses?expenseReportCode="+intent.getStringExtra("expense_report_code");
-        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses?expenseReportCode="+intent.getStringExtra("expense_report_code");
+        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/er?expenseReportCode="+intent.getStringExtra("expense_report_code");
+        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();
@@ -147,10 +179,13 @@ public class ERDetailsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView,
                                     View view, int position, long id) {
 
-                Intent intent4 = new Intent(ERDetailsActivity.this, ExpenseDetailsActivity.class);
-                intent4.putExtra(EXPENSE_LABEL, adapter.getItem(position).getLabel());
-                intent4.putExtra(EXPENSE_ID, adapter.getItem(position).getIdExpense());
-                startActivity(intent4);
+                sharedPreferencesER.edit()
+                        .putString(EXPENSE_LABEL, adapter.getItem(position).getLabel())
+                        .putInt(EXPENSE_ID, adapter.getItem(position).getIdExpense())
+                        .putBoolean(REFUND_TRACKER, false)
+                        .apply();
+                Intent intentNextPage = new Intent(ERDetailsActivity.this, ExpenseDetailsActivity.class);
+                startActivity(intentNextPage);
             }
         });
 

@@ -15,5 +15,5 @@ public class ListViewExpenseReport {
     public TextView date;
     public TextView city;
     public TextView comment;
-    //public TextView amount;
+    public TextView amount;
 }
