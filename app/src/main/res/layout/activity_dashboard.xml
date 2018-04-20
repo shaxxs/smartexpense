@@ -71,6 +71,7 @@
                     android:textStyle="bold"
                     android:gravity="start"
                     android:text="NOM"
+                    android:layout_marginLeft="8dp"
                     android:textColor="#ffffff"
                     android:textSize="18sp" />
 

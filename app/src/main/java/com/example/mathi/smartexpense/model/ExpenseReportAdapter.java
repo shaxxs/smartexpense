@@ -36,7 +36,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
             viewHolder.date = (TextView) convertView.findViewById(R.id.dateExpenseReport);
             viewHolder.city = (TextView) convertView.findViewById(R.id.cityExpenseReport);
             viewHolder.comment = (TextView) convertView.findViewById(R.id.commentExpenseReport);
-            //viewHolder.amount = (TextView) convertView.findViewById(R.id.expenseTotal);
+            viewHolder.amount = (TextView) convertView.findViewById(R.id.expenseTotal);
             convertView.setTag(viewHolder);
         }
 
@@ -47,7 +47,10 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
         viewHolder.date.setText(er.getDate());
         viewHolder.city.setText(er.getCity());
         viewHolder.comment.setText(er.getComment());
-        //viewHolder.amount.setText(String.valueOf(er.getAmount()));
+        viewHolder.amount.setText(String.valueOf(er.getAmount())+"€");
+        if (viewHolder.comment.getText().equals("")) {
+            viewHolder.comment.setVisibility(View.GONE);
+        }
 
         return convertView;
     }

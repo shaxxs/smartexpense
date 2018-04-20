@@ -62,6 +62,7 @@ public class HttpGetRequest extends AsyncTask<String,
         return result; // JSON reçu du serveur
     }
     protected void onPostExecute(String result) {
+
         super.onPostExecute(result);
     }
 }

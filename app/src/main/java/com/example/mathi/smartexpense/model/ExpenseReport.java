@@ -5,20 +5,20 @@ package com.example.mathi.smartexpense.model;
  */
 
 public class ExpenseReport {
-    private String code;
+    private int code;
     private String date;
     private String city;
-    //private float amount;
+    private float amount;
     private String comment;
     private String submissionDate;
 
-    public ExpenseReport(String date, String city, String comment, String code, String submissionDate) {
+    public ExpenseReport(String date, String city, String comment, int code, String submissionDate, float amount) {
         this.date = date;
         this.city = city;
-        //this.amount = amount;
         this.comment = comment;
         this.code = code;
         this.submissionDate = submissionDate;
+        this.amount = amount;
     }
 
     public String getSubmissionDate() {
@@ -29,11 +29,11 @@ public class ExpenseReport {
         this.submissionDate = submissionDate;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -53,13 +53,13 @@ public class ExpenseReport {
         this.city = city;
     }
 
-   /* public float getAmount() {
+    public float getAmount() {
         return amount;
     }
 
     public void setAmount(float amount) {
         this.amount = amount;
-    }*/
+    }
 
     public String getComment() {
         return comment;
