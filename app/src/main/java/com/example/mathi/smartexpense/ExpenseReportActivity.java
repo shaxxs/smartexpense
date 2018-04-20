@@ -114,8 +114,8 @@ public class ExpenseReportActivity extends AppCompatActivity {
                     comment = obj.getString("expenseReportComment");
                 }
                 // On récupère le montant total des dépenses de la note de frais
-                String myURL2 = "http://www.gyejacquot-pierre.fr/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
-                //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
+                //String myURL2 = "http://www.gyejacquot-pierre.fr/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
+                String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
                 HttpGetRequest getRequest2 = new HttpGetRequest();
                 String result2 = "";
                 try {

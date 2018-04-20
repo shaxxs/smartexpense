@@ -38,6 +38,7 @@ public class ERDetailsActivity extends AppCompatActivity {
     private ExpenseAdapter adapter;
     final String EXPENSE_LABEL = "expense_label";
     final String EXPENSE_ID = "expense_id";
+    final String NEW_EXPENSE_REPORT = "new_expense_report";
     private TextView status;
     SharedPreferences sharedPreferencesER;
     private String erDate;
@@ -87,6 +88,9 @@ public class ERDetailsActivity extends AppCompatActivity {
                 /* Lien vers la vue Nouvelle dépense */
                 Intent intentAddExpense = new Intent(ERDetailsActivity.this, NewExpenseActivity.class);
                 startActivity(intentAddExpense);
+                sharedPreferencesER.edit()
+                        .putBoolean(NEW_EXPENSE_REPORT, false)
+                        .apply();
             }
         });
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -42,6 +43,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     private String category;
     private int expenseReportCodeTemporaire = 6;
     final String EXPENSE_REPORT_CODE = "expense_report_code";
+    final String NEW_EXPENSE_REPORT = "new_expense_report";
+    final String FILE_EXPENSE_REPORT = "file_expense_report";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,9 +214,23 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Lien vers la vue Note de Frais Détails
-                Intent intentReturn = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
-                startActivity(intentReturn);
+                // on récupère les données de notre fichier SharedPreferences
+                SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
+                Boolean newExpenseReport = false;
+                // si on vient de la page nouvelle note de frais, renvoi vers la liste des notes de frais
+                // si on vient de la page note de frais - details, renvoi vers celle ci
+                if (sharedPreferencesER.contains(NEW_EXPENSE_REPORT)) {
+                    newExpenseReport = sharedPreferencesER.getBoolean(NEW_EXPENSE_REPORT, false);
+                }
+                if (newExpenseReport.equals(false)) {
+                    //Lien vers la vue Note de Frais Détails
+                    Intent intentReturn = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                    startActivity(intentReturn);
+                } else {
+                    //Lien vers la vue Note de frais
+                    Intent intentReturn = new Intent(NewExpenseActivity.this, ExpenseReportActivity.class);
+                    startActivity(intentReturn);
+                }
             }
         });
 
