@@ -28,7 +28,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
     SharedPreferences sharedPreferencesER;
     private String expLabel;
     private int expId;
-    private Boolean refundTracker;
+    private Boolean refundTracker; // indique si on vient de la page Suivi des remboursements ou Note de frais Détails, true pour Suivi des rb, false pour Note de frais
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +48,12 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            // si on vient de la page Note de frais - détails
             if (refundTracker.equals(false)) {
-                /* Lien vers la vue Note de frais */
+                /* Lien vers la vue Note de frais - détails */
                 Intent intentReturn = new Intent(ExpenseDetailsActivity.this, ERDetailsActivity.class);
                 startActivity(intentReturn);
+            // si on vient de la page Suivi des remboursements
             } else {
                 /* Lien vers la vue Suivi des remboursements */
                 Intent intentReturn = new Intent(ExpenseDetailsActivity.this, RefundTrackerActivity.class);
@@ -84,8 +86,8 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
         /* Si c'est un trajet */
         if (expLabel.equals("Trajet")) {
-            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
-            //String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
+            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
+            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
@@ -108,13 +110,6 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                         refundAmount.setText(String.valueOf(obj.getInt("refundAmountT")) + "€");
                         paymentDate.setText(obj.getString("paymentDateT"));
                     }
-                } else {
-                    date.setText("");
-                    totalAmount.setText("");
-                    status.setText("");
-                    paymentDate.setText("");
-                    refundAmount.setText("");
-                    validationDate.setText("");
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
@@ -125,8 +120,8 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
             buttonDetails.setVisibility(View.GONE);
-            String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
-            //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
+            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
+            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();

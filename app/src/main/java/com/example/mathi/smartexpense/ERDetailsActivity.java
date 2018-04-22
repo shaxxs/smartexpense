@@ -107,10 +107,9 @@ public class ERDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
 
-                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
                 String submissionDate = "";
-                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
-                String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
+                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
+                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
 
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
@@ -155,8 +154,8 @@ public class ERDetailsActivity extends AppCompatActivity {
         liste = findViewById(R.id.listERDetails);
         List<Expense> eList = new ArrayList<Expense>();
 
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses?expenseReportCode="+erCode;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
+        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses?expenseReportCode="+erCode;
+        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
 
         HttpGetRequest getRequest = new HttpGetRequest();
         try {

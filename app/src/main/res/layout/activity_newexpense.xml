@@ -43,7 +43,7 @@
         android:textColorHint="@android:color/white"
         android:visibility="gone" />
 
-    <EditText
+    <TextView
         android:id="@+id/dateDeparture"
         android:layout_width="300dp"
         android:layout_height="35dp"
@@ -60,7 +60,7 @@
         android:textColorHint="@android:color/white"
         android:visibility="gone" />
 
-    <EditText
+    <TextView
         android:id="@+id/dateArrival"
         android:layout_width="300dp"
         android:layout_height="35dp"
