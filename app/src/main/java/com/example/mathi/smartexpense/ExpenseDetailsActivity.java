@@ -86,8 +86,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
         /* Si c'est un trajet */
         if (expLabel.equals("Trajet")) {
-            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
-            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
@@ -98,18 +97,26 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     date.setText(obj.getString("departureDate"));
                     totalAmount.setText(String.valueOf(obj.getInt("expenseTotalT")) + "€");
                     status.setText(obj.getString("validationState"));
-                    if (obj.getString("dateValidation").equals("null")) {
+                    if (obj.isNull("dateValidation")) {
                         validationDate.setText("");
                     } else {
                         validationDate.setText(obj.getString("dateValidation"));
                     }
-                    if (obj.getString("paymentDateT").equals("null") || String.valueOf(obj.getInt("refundAmountT")).equals("null")) {
+                    if (obj.isNull("paymentDateT") || obj.isNull("refundAmountT")) {
                         paymentDate.setText("");
                         refundAmount.setText("");
                     } else {
                         refundAmount.setText(String.valueOf(obj.getInt("refundAmountT")) + "€");
                         paymentDate.setText(obj.getString("paymentDateT"));
                     }
+                // si le résultat est vide, l'appli ne crash pas, les champs sont vides
+                } else {
+                    date.setText("");
+                    totalAmount.setText("");
+                    status.setText("");
+                    paymentDate.setText("");
+                    refundAmount.setText("");
+                    validationDate.setText("");
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
@@ -120,8 +127,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
             buttonDetails.setVisibility(View.GONE);
-            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
-            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
@@ -132,18 +138,19 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     date.setText(obj.getString("businessExpenseDate"));
                     totalAmount.setText(String.valueOf(obj.getInt("expenseTotalB")) + "€");
                     status.setText(obj.getString("validationState"));
-                    if (obj.getString("dateValidation").equals("null")) {
+                    if (obj.isNull("dateValidation")) {
                         validationDate.setText("");
                     } else {
                         validationDate.setText(obj.getString("dateValidation"));
                     }
-                    if (obj.getString("paymentDateB").equals("null") || String.valueOf(obj.getInt("refundAmountB")).equals("null")) {
+                    if (obj.isNull("paymentDateB") || obj.isNull("refundAmountB")) {
                         paymentDate.setText("");
                         refundAmount.setText("");
                     } else {
                         refundAmount.setText(String.valueOf(obj.getInt("refundAmountB")) + "€");
                         paymentDate.setText(obj.getString("paymentDateB"));
                     }
+                // si le résultat est vide, l'appli ne crash pas, les champs sont vides
                 } else {
                     date.setText("");
                     totalAmount.setText("");
