@@ -1,6 +1,7 @@
 package com.example.mathi.smartexpense;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,23 +22,41 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 
     final String EXPENSE_LABEL = "expense_label";
     final String EXPENSE_ID = "expense_id";
+    final String REFUND_TRACKER = "refund_tracker";
+    final String FILE_EXPENSE_REPORT = "file_expense_report";
     private Button buttonDetails;
+    SharedPreferences sharedPreferencesER;
+    private String expLabel;
+    private int expId;
+    private Boolean refundTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_details);
 
-        final Intent intentPreviousPage = getIntent();
+// on récupère les données de notre fichier SharedPreferences
+        sharedPreferencesER = this.getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
+        if (sharedPreferencesER.contains(EXPENSE_LABEL) && sharedPreferencesER.contains(EXPENSE_ID) && sharedPreferencesER.contains(REFUND_TRACKER)) {
+            expLabel = sharedPreferencesER.getString(EXPENSE_LABEL, null);
+            expId = sharedPreferencesER.getInt(EXPENSE_ID, 0);
+            refundTracker = sharedPreferencesER.getBoolean(REFUND_TRACKER, false);
+        }
 
 /* Gestion du clic sur le bouton Retour */
         Button buttonReturn = (Button) findViewById(R.id.returnButtonExpenseDetails);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            if (refundTracker.equals(false)) {
                 /* Lien vers la vue Note de frais */
-                Intent intentReturn = new Intent(ExpenseDetailsActivity.this, ExpenseReportActivity.class);
+                Intent intentReturn = new Intent(ExpenseDetailsActivity.this, ERDetailsActivity.class);
                 startActivity(intentReturn);
+            } else {
+                /* Lien vers la vue Suivi des remboursements */
+                Intent intentReturn = new Intent(ExpenseDetailsActivity.this, RefundTrackerActivity.class);
+                startActivity(intentReturn);
+            }
             }
         });
 
@@ -48,14 +67,13 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /* Lien vers la vue Dépense - Détails */
                 Intent intentDetails = new Intent(ExpenseDetailsActivity.this, ExpenseMoreDetailsActivity.class);
-                intentDetails.putExtra(EXPENSE_ID, intentPreviousPage.getIntExtra("expense_id", 0));
                 startActivity(intentDetails);
             }
         });
 
 /* Déclaration des TextView de la vue */
         TextView label = (TextView) findViewById(R.id.expenseCategory);
-        label.setText(intentPreviousPage.getStringExtra("expense_label"));
+        label.setText(expLabel);
         TextView date = (TextView) findViewById(R.id.expenseDate);
         TextView status = (TextView) findViewById(R.id.expenseStatus);
         TextView validationDate = (TextView) findViewById(R.id.expenseValidationDate);
@@ -65,9 +83,9 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
         /* Si c'est un trajet */
-        if (intentPreviousPage.getStringExtra("expense_label").equals("Trajet")) {
-            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+intentPreviousPage.getIntExtra("expense_id", 0);
-//            String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT=" + intentPreviousPage.getIntExtra("expense_id", 0);
+        if (expLabel.equals("Trajet")) {
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
+            //String myURL = "http:/10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
@@ -107,8 +125,8 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
             buttonDetails.setVisibility(View.GONE);
-            String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+intentPreviousPage.getIntExtra("expense_id", 0);
-//            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+intentPreviousPage.getIntExtra("expense_id", 0);
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
+            //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
                 String result = getRequest.execute(myURL).get();
