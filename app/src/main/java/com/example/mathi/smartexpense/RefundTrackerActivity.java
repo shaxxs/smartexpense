@@ -84,8 +84,7 @@ public class RefundTrackerActivity extends AppCompatActivity {
         /* Gestion de la ListView */
         listViewRefunds = findViewById(R.id.listViewRefunds);
         List<Expense> eList = new ArrayList<Expense>();
-        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/user?idUser="+idUser;
-        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/user?idUser="+idUser;
+        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/user?idUser="+idUser;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();
@@ -93,9 +92,9 @@ public class RefundTrackerActivity extends AppCompatActivity {
             JSONArray array = new JSONArray(result);
             for (int i= 0; i < array.length(); i++) {
                 JSONObject obj = new JSONObject(array.getString(i));
-                if (!obj.getString("refundAmount").equals("null")) {
+                if (!obj.isNull("refundAmount")) {
                     String comment = "";
-                    if (obj.getString("expenseDetails").equals("null")) {
+                    if (obj.isNull("expenseDetails")) {
                         comment = "";
                     } else {
                         comment = obj.getString("expenseDetails");

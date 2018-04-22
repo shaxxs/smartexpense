@@ -113,7 +113,6 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
         //Appel de la fonction pour récupérer la liste de tous les clients
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/customers";
-//        String myURL = "http://localhost/API/public/customers";
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             result = getRequest.execute(myURL).get();
@@ -156,8 +155,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
 
                 //Appel de la fonction pour créer une note de frais
-                //String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
-                String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
+                String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
                     result2 = getRequest.execute(myURL2).get();
