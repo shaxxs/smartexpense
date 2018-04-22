@@ -98,8 +98,8 @@ public class ExpenseReportActivity extends AppCompatActivity {
         liste = findViewById(R.id.listExpenseReport);
         List<ExpenseReport> erList = new ArrayList<ExpenseReport>();
         // On récupère les données des notes de frais de l'utilisateur
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
+        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
+        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();

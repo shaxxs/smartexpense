@@ -33,18 +33,19 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     private Spinner categorySpinner;
     private EditText departureCity;
     private TextView dateExpense;
-    private EditText dateDeparture;
-    private EditText dateArrival;
+    private TextView dateDeparture;
+    private TextView dateArrival;
     private EditText arrivalCity;
     private EditText kms;
     private EditText amount;
     private EditText details;
     private EditText durationTravel;
     private String category;
-    private int expenseReportCodeTemporaire = 6;
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String NEW_EXPENSE_REPORT = "new_expense_report";
     final String FILE_EXPENSE_REPORT = "file_expense_report";
+    SharedPreferences sharedPreferencesER;
+    private int erCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +150,11 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
 //Gestion du clic sur le bouton Valider
         final Button buttonValid = (Button) findViewById(R.id.validButton);
+        sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
+
+        if (sharedPreferencesER.contains(EXPENSE_REPORT_CODE)) {
+            erCode = sharedPreferencesER.getInt(EXPENSE_REPORT_CODE, 0);
+        }
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,7 +165,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
                     } else {
                         //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+ExpenseReportCodeTemporaire;
-                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+expenseReportCodeTemporaire;
+                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode;
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
                         try {
@@ -179,7 +185,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
                     } else {
                         //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB="+String.valueOf(amount.getText())+"&businessExpenseDetails="+details.getText()+"&businessExpenseDate="+dateExpense.getText()+"&expenseReportCodeB="+ExpenseReportCodeTemporaire;
-                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + expenseReportCodeTemporaire;
+                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode;
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
                         try {
@@ -215,7 +221,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 // on récupère les données de notre fichier SharedPreferences
-                SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
+                sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
                 Boolean newExpenseReport = false;
                 // si on vient de la page nouvelle note de frais, renvoi vers la liste des notes de frais
                 // si on vient de la page note de frais - details, renvoi vers celle ci
