@@ -1,17 +1,29 @@
 package com.example.mathi.smartexpense;
 
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -41,6 +54,20 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     private EditText details;
     private EditText durationTravel;
     private String category;
+  
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
+    //permet de demander les droits video et audio
+    private static String[] PERMISSIONS_STORAGE_CAMERA = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.CAPTURE_VIDEO_OUTPUT,
+            Manifest.permission.CAPTURE_AUDIO_OUTPUT
+    };
+    private ImageView mImageThumbnail;
+    private Button buttonProof;
+    private Uri imageUri;
+
     private int expenseReportCodeTemporaire = 6;
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String NEW_EXPENSE_REPORT = "new_expense_report";
@@ -152,14 +179,14 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //Enregistrement de la nouvelle dépense dans la db
+                //Enregistrement de la nouvelle dépense dans la db
                 //Si c'est un trajet
                 if (category.equals("Trajet")) {
                     if (String.valueOf(amount.getText()).equals("") || departureCity.getText().equals("") || arrivalCity.getText().equals("") || dateDeparture.getText().equals("") || dateArrival.getText().equals("") || String.valueOf(kms.getText()).equals("")) {
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
                     } else {
-                        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+ExpenseReportCodeTemporaire;
-                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+expenseReportCodeTemporaire;
+                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+ExpenseReportCodeTemporaire;
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+expenseReportCodeTemporaire;
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
                         try {
@@ -173,13 +200,13 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         }
                     }
 
-                //Si c'est un businessexpense
+                    //Si c'est un businessexpense
                 } else {
                     if (String.valueOf(amount.getText()).equals("") || dateExpense.getText().equals("")) {
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
                     } else {
-                        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB="+String.valueOf(amount.getText())+"&businessExpenseDetails="+details.getText()+"&businessExpenseDate="+dateExpense.getText()+"&expenseReportCodeB="+ExpenseReportCodeTemporaire;
-                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + expenseReportCodeTemporaire;
+                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB="+String.valueOf(amount.getText())+"&businessExpenseDetails="+details.getText()+"&businessExpenseDate="+dateExpense.getText()+"&expenseReportCodeB="+ExpenseReportCodeTemporaire;
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + expenseReportCodeTemporaire;
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
                         try {
@@ -199,19 +226,33 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
             }
         });
 
+
 //Gestion du clic sur le bouton Ajouter un justificatif
-        Button buttonProof = (Button) findViewById(R.id.btnAddProof);
+        buttonProof = findViewById(R.id.btnAddProof);
+        Log.v("Path image", this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
         buttonProof.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+// Nous n'avons pas la permission de stockée dans le
+// PackageManager pour READ et WRITE sur external storage + Utiliser LA CAMERA
+                    ActivityCompat.requestPermissions(
+                            NewExpenseActivity.this, PERMISSIONS_STORAGE_CAMERA,
+                            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE
+                    );
+                } else {
+                    takePictureIntent();
+                }
             }
         });
 
-//Gestion du clic sur le bouton Retour
+        //Gestion du clic sur le bouton Retour
         Button buttonReturn = (Button) findViewById(R.id.returnButton);
-        buttonReturn.setOnClickListener(new View.OnClickListener() {
+        buttonReturn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 // on récupère les données de notre fichier SharedPreferences
@@ -234,17 +275,51 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-//Gestion de la liste déroulante
+        //Gestion de la liste déroulante
         addListenerOnSpinnerItemSelection();
+
+    }
+//traitement de la prise de vue par l'appareil photo en l'appelant et en enregistrant la photo dans le lien envoyé via putextra
+    private void takePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.v("Path image", this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
+        imageUri = Uri.fromFile(new
+                File(this.getExternalFilesDir(Environment.DIRECTORY_DCIM), "justificatif_" +
+                String.valueOf(System.currentTimeMillis()) + ".jpg"));
+        takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
     }
 
-//Gestion de la liste déroulante
+    //lorsque la photo a été prise et la photo enregistré on peut appeler la photo pour la mettre dans une image view
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                retrieveCapturedPicture();
+            }
+        }
+    }
+
+    //pour traiter la photo qui a été prise pour le justificatif en l'envoyant vers l'image view mImageThumbnail
+    private void retrieveCapturedPicture() {
+        // display picture on ImageView
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
+        mImageThumbnail.setImageBitmap(bitmap);
+        mImageThumbnail.setVisibility(View.VISIBLE);
+    }
+
+    //Gestion de la liste déroulante
     public void addListenerOnSpinnerItemSelection() {
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
         categorySpinner.setOnItemSelectedListener(this);
     }
 
-//Gestion de l'item sélectionné dans la liste déroulante et des champs affichés sur la vue
+    //Gestion de l'item sélectionné dans la liste déroulante et des champs affichés sur la vue
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         category = parent.getItemAtPosition(pos).toString();
         if (category.equals("Trajet")) {
@@ -274,5 +349,4 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
 }
