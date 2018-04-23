@@ -77,10 +77,10 @@ public class ERDetailsActivity extends AppCompatActivity {
 /* Gestion du clic sur le bouton Ajouter une dépense */
         Button addButton = (Button) findViewById(R.id.addExpenseButton);
         // si la note a déjà été soumise, on cache le bouton Ajouter une dépense
-        if (!erSubmissionDate.equals("null")) {
-            addButton.setVisibility(View.GONE);
-        } else {
+        if (erSubmissionDate.equals("null")) {
             addButton.setVisibility(View.VISIBLE);
+        } else {
+            addButton.setVisibility(View.GONE);
         }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,19 +97,17 @@ public class ERDetailsActivity extends AppCompatActivity {
 /* Gestion du clic sur le bouton Soumettre */
         final Button submitButton = (Button) findViewById(R.id.submitButton);
         // si la note a déjà été soumise, on cache le bouton Soumettre
-        if (!erSubmissionDate.equals("null")) {
-            submitButton.setVisibility(View.GONE);
-        } else {
+        if (erSubmissionDate.equals("null")) {
             submitButton.setVisibility(View.VISIBLE);
+        } else {
+            submitButton.setVisibility(View.GONE);
         }
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
 
-                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+intent.getStringExtra("expense_report_code");
                 String submissionDate = "";
-                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
                 String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
 
                 HttpGetRequest getRequest = new HttpGetRequest();
@@ -155,8 +153,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         liste = findViewById(R.id.listERDetails);
         List<Expense> eList = new ArrayList<Expense>();
 
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses?expenseReportCode="+erCode;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
+        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/er?expenseReportCode="+erCode;
 
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
@@ -166,7 +163,7 @@ public class ERDetailsActivity extends AppCompatActivity {
             for (int i= 0; i < array.length(); i++) {
                 JSONObject obj = new JSONObject(array.getString(i));
                 String comment = "";
-                if (obj.getString("expenseDetails").equals("null")) {
+                if (obj.isNull("expenseDetails")) {
                     comment = "";
                 } else {
                     comment = obj.getString("expenseDetails");
