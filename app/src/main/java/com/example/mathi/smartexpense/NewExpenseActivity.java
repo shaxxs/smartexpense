@@ -313,11 +313,12 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     //pour traiter la photo qui a été prise pour le justificatif en l'envoyant vers l'image view mImageThumbnail
     private void retrieveCapturedPicture() {
         // display picture on ImageView
+        ImageView imageView = findViewById(R.id.mImageThumbnail);
+        imageView.setVisibility(View.VISIBLE);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
-        mImageThumbnail.setImageBitmap(bitmap);
-        mImageThumbnail.setVisibility(View.VISIBLE);
+        imageView.setImageBitmap(bitmap);
     }
 
     //Gestion de la liste déroulante
