@@ -2,6 +2,8 @@ package com.example.mathi.smartexpense;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -108,7 +110,8 @@ public class ERDetailsActivity extends AppCompatActivity {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
 
                 String submissionDate = "";
-                String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
+                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
+                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
 
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
@@ -150,10 +153,12 @@ public class ERDetailsActivity extends AppCompatActivity {
         city.setText(erCity);
 
 /* Gestion de la ListView */
+
         liste = findViewById(R.id.listERDetails);
         List<Expense> eList = new ArrayList<Expense>();
 
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/er?expenseReportCode="+erCode;
+        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/er?expenseReportCode="+erCode;
+        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
 
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
@@ -168,7 +173,7 @@ public class ERDetailsActivity extends AppCompatActivity {
                 } else {
                     comment = obj.getString("expenseDetails");
                 }
-                eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, obj.getInt("expenseTotal")));
+                eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, obj.getInt("expenseTotal"), obj.getString("submissionDate")));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
