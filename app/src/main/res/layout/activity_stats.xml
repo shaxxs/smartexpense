@@ -36,20 +36,21 @@
             android:textStyle="bold" />
 
         <WebView
-                android:layout_width="279dp"
-                android:layout_height="146dp"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center_horizontal"/>
+            android:id="@+id/statPie"
+            android:layout_width="279dp"
+            android:layout_height="146dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/filterText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="190dp"
             android:layout_marginLeft="20dp"
-            android:text="Filtré par:"
+            android:layout_marginTop="190dp"
+            android:text="Filtrer par:"
             android:textColor="@android:color/background_light"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerFilter"
@@ -62,6 +63,7 @@
             android:entries="@android:color/background_dark" />
 
         <WebView
+            android:id="@+id/statColumn"
             android:layout_width="279dp"
             android:layout_height="146dp"
             android:layout_marginTop="240dp"

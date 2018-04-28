@@ -13,13 +13,23 @@ public class Expense {
     private String label;
     private String details;
     private double expenseTotal;
+    private String submissionDate;
 
-    public Expense(int idExpense, String date, String label, String details, double expenseTotal) {
+    public Expense(int idExpense, String date, String label, String details, double expenseTotal, String submissionDate) {
         this.idExpense = idExpense;
         this.date = date;
         this.label = label;
         this.details = details;
         this.expenseTotal = expenseTotal;
+        this.submissionDate = submissionDate;
+    }
+
+    public String getSubmissionDate() {
+        return submissionDate;
+    }
+
+    public void setSubmissionDate(String submissionDate) {
+        this.submissionDate = submissionDate;
     }
 
     public int getIdExpense() {

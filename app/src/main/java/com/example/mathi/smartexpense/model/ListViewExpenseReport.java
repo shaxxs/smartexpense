@@ -1,5 +1,6 @@
 package com.example.mathi.smartexpense.model;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -16,4 +17,5 @@ public class ListViewExpenseReport {
     public TextView city;
     public TextView comment;
     public TextView amount;
+    public Button deleteER;
 }
