@@ -86,8 +86,8 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 /* Récupération des données d'une dépense et injection dans les TextView de la vue */
         /* Si c'est un trajet */
         if (expLabel.equals("Trajet")) {
-            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
-            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel?idExpenseT="+expId;
+            //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel?idExpenseT="+expId;
 
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
@@ -129,8 +129,8 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         } else {
             /* Disparition du bouton Détails (qui mène vers les infos d'un trajet) */
             buttonDetails.setVisibility(View.GONE);
-            //String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
-            String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
+            String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense?idExpenseB="+expId;
+            //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense?idExpenseB="+expId;
 
             HttpGetRequest getRequest = new HttpGetRequest();
             try {
