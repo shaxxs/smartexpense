@@ -113,19 +113,9 @@ public class ExpenseReportActivity extends AppCompatActivity {
                 } else {
                     comment = obj.getString("expenseReportComment");
                 }
-                // On récupère le montant total des dépenses de la note de frais
-                String myURL2 = "http://www.gyejacquot-pierre.fr/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
-                //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/amount?expenseReportCode="+obj.getInt("expenseReportCode");
-                HttpGetRequest getRequest2 = new HttpGetRequest();
-                String result2 = "";
-                try {
-                    result2 = getRequest2.execute(myURL2).get();
-                    System.out.println("Retour HTTPGetRequest : " + result2);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                float erTotal = Float.parseFloat(obj.getString("totalTravel"))+Float.parseFloat(obj.getString("totalBusiness"));
                 // On ajoute chaque note de frais à la ListView
-                erList.add(new ExpenseReport(obj.getString("expenseReportDate"), obj.getString("expenseReportCity"),comment, obj.getInt("expenseReportCode"), obj.getString("submissionDate"), Float.parseFloat(result2)));
+                erList.add(new ExpenseReport(obj.getString("expenseReportDate"), obj.getString("expenseReportCity"),comment, obj.getInt("expenseReportCode"), obj.getString("submissionDate"), erTotal));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

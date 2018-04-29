@@ -113,8 +113,8 @@ public class ERDetailsActivity extends AppCompatActivity {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
 
                 String submissionDate = "";
-                String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
-                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
+                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
+                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
 
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
@@ -176,7 +176,7 @@ public class ERDetailsActivity extends AppCompatActivity {
                 } else {
                     comment = obj.getString("expenseDetails");
                 }
-                eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, obj.getInt("expenseTotal"), obj.getString("submissionDate")));
+                eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, Float.parseFloat(obj.getString("expenseTotal")), obj.getString("submissionDate")));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
