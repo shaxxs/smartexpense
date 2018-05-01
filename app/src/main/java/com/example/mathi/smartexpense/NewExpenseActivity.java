@@ -319,6 +319,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
         imageView.setImageBitmap(bitmap);
+        imageView.setRotation(90);
     }
 
     //Gestion de la liste déroulante
