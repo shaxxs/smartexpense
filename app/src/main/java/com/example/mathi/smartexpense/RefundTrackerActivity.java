@@ -85,6 +85,7 @@ public class RefundTrackerActivity extends AppCompatActivity {
         listViewRefunds = findViewById(R.id.listViewRefunds);
         List<Expense> eList = new ArrayList<Expense>();
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/user?idUser="+idUser;
+        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/user?idUser="+idUser;
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             String result = getRequest.execute(myURL).get();

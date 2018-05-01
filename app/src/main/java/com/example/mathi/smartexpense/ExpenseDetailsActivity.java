@@ -16,6 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class ExpenseDetailsActivity extends AppCompatActivity {
@@ -98,18 +101,25 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(array.getString(0));
                     date.setText(obj.getString("departureDate"));
                     totalAmount.setText(String.valueOf(obj.getInt("expenseTotalT")) + "€");
-                    status.setText(obj.getString("validationState"));
+                    if (obj.isNull("validationState")) {
+                        status.setText("");
+                    } else {
+                        status.setText(obj.getString("validationState"));
+                    }
                     if (obj.isNull("dateValidation")) {
                         validationDate.setText("");
                     } else {
                         validationDate.setText(obj.getString("dateValidation"));
                     }
-                    if (obj.isNull("paymentDateT") || obj.isNull("refundAmountT")) {
+                    if (obj.isNull("paymentDateT")) {
                         paymentDate.setText("");
+                    } else {
+                        paymentDate.setText(obj.getString("paymentDateT"));
+                    }
+                    if (obj.isNull("refundAmountT")) {
                         refundAmount.setText("");
                     } else {
                         refundAmount.setText(String.valueOf(obj.getInt("refundAmountT")) + "€");
-                        paymentDate.setText(obj.getString("paymentDateT"));
                     }
                 // si le résultat est vide, l'appli ne crash pas, les champs sont vides
                 } else {
@@ -141,18 +151,25 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(array.getString(0));
                     date.setText(obj.getString("businessExpenseDate"));
                     totalAmount.setText(String.valueOf(obj.getInt("expenseTotalB")) + "€");
-                    status.setText(obj.getString("validationState"));
+                    if (obj.isNull("validationState")) {
+                        status.setText("Non soumise");
+                    } else {
+                        status.setText(obj.getString("validationState"));
+                    }
                     if (obj.isNull("dateValidation")) {
                         validationDate.setText("");
                     } else {
-                        validationDate.setText(obj.getString("dateValidation"));
+                        validationDate.setText(String.valueOf(setDateFormat(obj.getString("dateValidation"))));
                     }
-                    if (obj.isNull("paymentDateB") || obj.isNull("refundAmountB")) {
+                    if (obj.isNull("paymentDateT")) {
                         paymentDate.setText("");
+                    } else {
+                        paymentDate.setText(String.valueOf(setDateFormat(obj.getString("paymentDateT"))));
+                    }
+                    if (obj.isNull("refundAmountT")) {
                         refundAmount.setText("");
                     } else {
-                        refundAmount.setText(String.valueOf(obj.getInt("refundAmountB")) + "€");
-                        paymentDate.setText(obj.getString("paymentDateB"));
+                        refundAmount.setText(String.valueOf(obj.getInt("refundAmountT")) + "€");
                     }
                 // si le résultat est vide, l'appli ne crash pas, les champs sont vides
                 } else {
@@ -167,7 +184,18 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public String setDateFormat(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = format.parse(date);
+
+        format = new SimpleDateFormat("dd/MM/yyyy");
+        date = format.format(newDate);
+        return date;
     }
 }
