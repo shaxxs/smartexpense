@@ -66,9 +66,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     };
     private ImageView mImageThumbnail;
     private Button buttonProof;
-    private Uri imageUri;
+    private Uri imageUri = null;
     final String EXPENSE_REPORT_CODE = "expense_report_code";
-    final String NEW_EXPENSE_REPORT = "new_expense_report";
     final String FILE_EXPENSE_REPORT = "file_expense_report";
     SharedPreferences sharedPreferencesER;
     private int erCode;
@@ -175,44 +174,49 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         });
 
 //Gestion du clic sur le bouton Valider
-        final Button buttonValid = (Button) findViewById(R.id.validButton);
+
         sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
 
         if (sharedPreferencesER.contains(EXPENSE_REPORT_CODE)) {
             erCode = sharedPreferencesER.getInt(EXPENSE_REPORT_CODE, 0);
         }
+
+        Button buttonValid = (Button) findViewById(R.id.validButton);
+
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Enregistrement de la nouvelle dépense dans la db
                 //Si c'est un trajet
                 if (category.equals("Trajet")) {
-                    if (String.valueOf(amount.getText()).equals("") || departureCity.getText().equals("") || arrivalCity.getText().equals("") || dateDeparture.getText().equals("") || dateArrival.getText().equals("") || String.valueOf(kms.getText()).equals("")) {
-                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
-                    } else {
+                    if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || String.valueOf(dateDeparture.getText()).equals("") || String.valueOf(dateArrival.getText()).equals("") || String.valueOf(kms.getText()).equals("")) {
+                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
+                    } else{
+                        String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&proof="+String.valueOf(imageUri);
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&Proof="+String.valueOf(imageUri);
 
-                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode;
-
-                        HttpGetRequest getRequest = new HttpGetRequest();
-                        String result = "";
-                        try {
-                            result = getRequest.execute(myURL).get();
-                            System.out.println("Retour HTTPGetRequest : " + result);
-                        } catch (InterruptedException | ExecutionException e) {
+                        HttpGetRequest getRequest=new HttpGetRequest();
+                        String result="";
+                        try{
+                            result=getRequest.execute(myURL).get();
+                            System.out.println("Retour HTTPGetRequest : "+result);
+                        }catch(InterruptedException|ExecutionException e){
                             e.printStackTrace();
                         }
-                        if (result.equals("Succes")) {
-                            Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée",Toast.LENGTH_SHORT).show();
+                        if(result.equals("Succes")){
+                            Toast.makeText(getApplicationContext(),"Nouvelle dépense ajoutée",Toast.LENGTH_SHORT).show();
+                            //Lien vers la vue Note de frais
+                            Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                            startActivity(intentValid);
                         }
                     }
-
-                    //Si c'est un businessexpense
+                //Si c'est un businessexpense
                 } else {
-                    if (String.valueOf(amount.getText()).equals("") || dateExpense.getText().equals("")) {
-                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires",Toast.LENGTH_SHORT).show();
+                    if (String.valueOf(amount.getText()).equals("") || String.valueOf(dateExpense.getText()).equals("")) {
+                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                     } else {
-
-                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode;
+                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&proof="+String.valueOf(imageUri);
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode+"&proof="+String.valueOf(imageUri);
 
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
@@ -224,68 +228,56 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         }
                         if (result.equals("Succes")) {
                             Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
+                            //Lien vers la vue Note de frais
+                            Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                            startActivity(intentValid);
                         }
                     }
                 }
-                //Lien vers la vue Note de frais
-                Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
-                startActivity(intentValid);
             }
         });
+
 
 
 //Gestion du clic sur le bouton Ajouter un justificatif
-        buttonProof = findViewById(R.id.btnAddProof);
-        Log.v("Path image", this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
-        buttonProof.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                if (permission != PackageManager.PERMISSION_GRANTED) {
+            buttonProof = findViewById(R.id.btnAddProof);
+            Log.v("Path image", this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
+            buttonProof.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (permission != PackageManager.PERMISSION_GRANTED) {
 // Nous n'avons pas la permission de stockée dans le
 // PackageManager pour READ et WRITE sur external storage + Utiliser LA CAMERA
-                    ActivityCompat.requestPermissions(
-                            NewExpenseActivity.this, PERMISSIONS_STORAGE_CAMERA,
-                            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE
-                    );
-                } else {
-                    takePictureIntent();
+                        ActivityCompat.requestPermissions(
+                                NewExpenseActivity.this, PERMISSIONS_STORAGE_CAMERA,
+                                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE
+                        );
+                    } else {
+                        takePictureIntent();
+                    }
                 }
-            }
-        });
+            });
 
-        //Gestion du clic sur le bouton Retour
-        Button buttonReturn = (Button) findViewById(R.id.returnButton);
-        buttonReturn.setOnClickListener(new View.OnClickListener()
+            //Gestion du clic sur le bouton Retour
+            Button buttonReturn = (Button) findViewById(R.id.returnButton);
+            buttonReturn.setOnClickListener(new View.OnClickListener()
 
-        {
-            @Override
-            public void onClick(View view) {
-                // on récupère les données de notre fichier SharedPreferences
-                sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, MODE_PRIVATE);
-                Boolean newExpenseReport = false;
-                // si on vient de la page nouvelle note de frais, renvoi vers la liste des notes de frais
-                // si on vient de la page note de frais - details, renvoi vers celle ci
-                if (sharedPreferencesER.contains(NEW_EXPENSE_REPORT)) {
-                    newExpenseReport = sharedPreferencesER.getBoolean(NEW_EXPENSE_REPORT, false);
+            {
+                @Override
+                public void onClick(View view) {
+                //Lien vers la vue Note de Frais Détails
+                Intent intentReturn = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                startActivity(intentReturn);
                 }
-                if (newExpenseReport.equals(false)) {
-                    //Lien vers la vue Note de Frais Détails
-                    Intent intentReturn = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
-                    startActivity(intentReturn);
-                } else {
-                    //Lien vers la vue Note de frais
-                    Intent intentReturn = new Intent(NewExpenseActivity.this, ExpenseReportActivity.class);
-                    startActivity(intentReturn);
-                }
-            }
-        });
+            });
 
-        //Gestion de la liste déroulante
-        addListenerOnSpinnerItemSelection();
+            //Gestion de la liste déroulante
+            addListenerOnSpinnerItemSelection();
 
     }
+
 //traitement de la prise de vue par l'appareil photo en l'appelant et en enregistrant la photo dans le lien envoyé via putextra
     private void takePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

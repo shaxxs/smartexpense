@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="370dp"
-    android:layout_marginTop="10dp"
     android:layout_height="60dp"
     android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
     android:background="@color/blackOpacityButton"
+    android:descendantFocusability="blocksDescendants"
     android:padding="10dp">
 
 
@@ -14,14 +15,14 @@
         android:id="@+id/dateExpense"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
         android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:textColor="#ffffff"
-        android:text="Date" />
+        android:text="Date"
+        android:textColor="#ffffff" />
 
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -30,33 +31,40 @@
             android:id="@+id/labelExpense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="Catégorie" />
+            android:text="Catégorie"
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/commentExpense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Commentaire"
             android:textColor="#ffffff"
-            android:textStyle="italic"
-            android:text="Commentaire" />
+            android:textStyle="italic" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:paddingRight="10dp"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/amountExpense"
-            android:layout_width="match_parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:text="€" />
+            android:gravity=""
+            android:text="€"
+            android:paddingRight="10dp"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/deleteButtonE"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/cross"
+            />
 
     </LinearLayout>
 

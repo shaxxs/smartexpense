@@ -43,7 +43,6 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
     int idUser;
     Spinner clientsSpinner;
     String customerSelected;
-    final String NEW_EXPENSE_REPORT = "new_expense_report";
     final String FILE_EXPENSE_REPORT = "file_expense_report";
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String EXPENSE_REPORT_DATE = "expense_report_date";
@@ -156,6 +155,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 //Appel de la fonction pour créer une note de frais
                 String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
+                //String myURL2="http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
+
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
                     result2 = getRequest.execute(myURL2).get();
@@ -171,11 +172,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
                 startActivity(intent);
 
-                // ajout d'un booleen à notre fichier sharedpreferences qui permet à la vue suivante (new expense) de savoir
-                // qu'on vient de cette page, en cas de click sur le bouton retour
                 SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
                 sharedPreferencesER.edit()
-                        .putBoolean(NEW_EXPENSE_REPORT, true)
                         .putString(EXPENSE_REPORT_CITY, city)
                         .putInt(EXPENSE_REPORT_CODE, Integer.parseInt(result2))
                         .putString(EXPENSE_REPORT_DATE, ERDate)
