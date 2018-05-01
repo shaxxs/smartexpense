@@ -89,7 +89,32 @@ public class StatsActivity extends AppCompatActivity {
 
         w.getSettings().setLoadWithOverviewMode(true);
         w.getSettings().setUseWideViewPort(true);
-        w.loadUrl("http://10.0.2.2/googlechart/index.php?idUser="+idUser);
+        w.loadUrl("http://www.gyejacquot-pierre.fr/API/public/piechart?idUser="+idUser);
+        //w.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/piechart?idUser="+idUser);
+
+        /* Gestion de la WebView qui affiche les stats en colonnes */
+        WebView w2 = (WebView) findViewById(R.id.statColumn);
+        w2.getSettings().setJavaScriptEnabled(true);
+        final Activity activity2 = this;
+
+        w2.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Toast.makeText(activity2, description, Toast.LENGTH_SHORT).show();
+            }
+            @TargetApi(android.os.Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
+                // Redirect to deprecated method, so you can use it in all SDK versions
+                onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+            }
+        });
+
+        w2.getSettings().setLoadWithOverviewMode(true);
+        w2.getSettings().setUseWideViewPort(true);
+        w2.loadUrl("http://www.gyejacquot-pierre.fr/API/public/columnchart?idUser="+idUser);
+        //w2.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/columnchart?idUser="+idUser);
 
     }
 }

@@ -37,6 +37,7 @@ public class HttpGetRequest extends AsyncTask<String,
             connection.setRequestMethod(REQUEST_METHOD);
             connection.setReadTimeout(READ_TIMEOUT);
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
+            connection.setRequestProperty("Cache-Control", "no-cache");
 //Connexion effective à l’UTL
             connection.connect();
 //Création d’un flux de lecture en entrée
