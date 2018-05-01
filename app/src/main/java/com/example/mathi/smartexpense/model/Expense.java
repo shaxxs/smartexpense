@@ -2,6 +2,10 @@ package com.example.mathi.smartexpense.model;
 
 import android.widget.ImageView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by mathi on 12/04/2018.
  */
@@ -24,8 +28,23 @@ public class Expense {
         this.submissionDate = submissionDate;
     }
 
+    public String setDateFormat(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = format.parse(date);
+
+        format = new SimpleDateFormat("dd/MM/yyyy");
+        date = format.format(newDate);
+        return date;
+    }
+
     public String getSubmissionDate() {
-        return submissionDate;
+        String subDate = "null";
+        try {
+            subDate = String.valueOf(setDateFormat(submissionDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return subDate;
     }
 
     public void setSubmissionDate(String submissionDate) {
@@ -41,7 +60,13 @@ public class Expense {
     }
 
     public String getDate() {
-        return date;
+        String date1 = "null";
+        try {
+            date1 = String.valueOf(setDateFormat(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date1;
     }
 
     public void setDate(String date) {
