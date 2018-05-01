@@ -19,21 +19,10 @@
 
     <FrameLayout
         android:layout_width="359dp"
-        android:layout_height="428dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="368dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:singleLine="false"
-            android:text="Dépenses"
-            android:gravity="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp"
-            android:textStyle="bold" />
 
         <WebView
             android:id="@+id/statPie"
@@ -46,40 +35,40 @@
             android:id="@+id/filterText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="190dp"
-            android:text="Filtrer par:"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="185dp"
+            android:text="Dépenses par mois"
+            android:textSize="18sp"
             android:textColor="@android:color/background_light"
             android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerFilter"
-            android:layout_width="163dp"
-            android:layout_height="27dp"
-            android:layout_marginTop="190dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:background="@android:color/background_light"
-            android:entries="@android:color/background_dark" />
 
         <WebView
             android:id="@+id/statColumn"
             android:layout_width="279dp"
             android:layout_height="146dp"
-            android:layout_marginTop="240dp"
+            android:layout_marginTop="213dp"
             android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Dépenses par catégorie"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </FrameLayout>
 
     <Button
         android:id="@+id/returnButton"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/arrow"
-        android:padding="5dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:layout_marginLeft="25dp"
-        android:textColor="@android:color/background_light" />
+        android:layout_width="80dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/custome_button"
+        android:drawableLeft="@drawable/ic_return_button"
+        android:paddingLeft="15dp" />
 
 </LinearLayout>

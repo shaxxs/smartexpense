@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
-    /** expenses est la liste des models à afficher */
+    // expenses est la liste des models à afficher
     public ExpenseAdapter(Context context, List<Expense> expenses) {
         super(context, 0, expenses);
     }
@@ -39,46 +39,47 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_expense,parent, false);
         }
 
-        /** getItem(position) va récupérer l'item [position] de la List<ExpenseReport> expenseReports */
+        // getItem(position) va récupérer l'item [position] de la List<ExpenseReport> expenseReports
         final Expense e = getItem(position);
 
-        /** comme nos vues sont réutilisées, notre cellule possède déjà un ViewHolder */
+        // comme nos vues sont réutilisées, notre cellule possède déjà un ViewHolder
         ListViewExpense viewHolder = (ListViewExpense) convertView.getTag();
         if(viewHolder == null){
-            /** si elle n'avait pas encore de ViewHolder */
+            // si elle n'avait pas encore de ViewHolder
             viewHolder = new ListViewExpense();
             viewHolder.dateExpense = (TextView) convertView.findViewById(R.id.dateExpense);
             viewHolder.categoryExpense = (TextView) convertView.findViewById(R.id.labelExpense);
             viewHolder.commentExpense = (TextView) convertView.findViewById(R.id.commentExpense);
             viewHolder.amountExpense = (TextView) convertView.findViewById(R.id.amountExpense);
+
             viewHolder.deleteE = (Button) convertView.findViewById(R.id.deleteButtonE);
-            /** si la note de frais est déjà soumise, on enlève le bouton Supprimer*/
+            // si la note de frais est déjà soumise, on enlève le bouton Supprimer
             if (!e.getSubmissionDate().equals("null")) {
                 viewHolder.deleteE.setVisibility(View.GONE);
-            /** sinon, on affiche le bouton Supprimer */
+            // sinon, on affiche le bouton Supprimer
             } else {
                 viewHolder.deleteE.setVisibility(View.VISIBLE);
                 final ListViewExpense finalViewHolder = viewHolder;
                 final View finalConvertView = convertView;
-                /** au clic sur le bouton */
+                // au clic sur le bouton
                 viewHolder.deleteE.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /** on ouvre une boite de dialogue, qui demande de confirmer la suppression */
+                        // on ouvre une boite de dialogue, qui demande de confirmer la suppression
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
                         builder1.setMessage("Voulez-vous supprimer la dépense " + e.getLabel() + " ?");
                         builder1.setCancelable(true);
-                        /** bouton Confirmer */
+                        // bouton Confirmer
                         builder1.setPositiveButton(
                                 "Confirmer",
                                 new DialogInterface.OnClickListener() {
                                     /** au clic sur le bouton Confirmer */
                                     public void onClick(DialogInterface dialog, int id) {
-                                        /** la boite de dialogue se ferme */
+                                        // la boite de dialogue se ferme
                                         dialog.cancel();
-                                        /** on envoie la requete http qui supprime la dépense */
-                                        //String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/expense?idExpense="+String.valueOf(e.getIdExpense())+"&category="+String.valueOf(e.getLabel());
-                                        String myURL = "http://10.0.2.2/smartExpenseApi/API/public/delete/expense?idExpense=" + String.valueOf(e.getIdExpense()) + "&category=" + String.valueOf(e.getLabel());
+                                        // on envoie la requete http qui supprime la dépense
+                                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/expense?idExpense="+String.valueOf(e.getIdExpense())+"&category="+String.valueOf(e.getLabel());
+                                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/delete/expense?idExpense=" + String.valueOf(e.getIdExpense()) + "&category=" + String.valueOf(e.getLabel());
 
                                         HttpGetRequest getRequest = new HttpGetRequest();
                                         String result = "";
@@ -88,23 +89,22 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
                                         } catch (InterruptedException | ExecutionException e) {
                                             e.printStackTrace();
                                         }
-                                        /** si la requete a été correctement exécutée */
+                                        // si la requete a été correctement exécutée
                                         if (result.equals("Succes")) {
-                                            /** on supprime la dépense dans la ListView */
+                                            // on supprime la dépense dans la ListView
                                             remove(e);
-                                            /** on affiche un message qui dit Dépense supprimée */
+                                            // on affiche un message qui dit Dépense supprimée
                                             Toast.makeText(getContext(), "Dépense supprimée", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
-                        /** bouton Annuler */
+                        // bouton Annuler
                         builder1.setNegativeButton(
                                 "Annuler",
                                 new DialogInterface.OnClickListener() {
                                     /** au clic sur le bouton */
                                     public void onClick(DialogInterface dialog, int id) {
-                                        /** on ferme la boite de dialogue */
-                                        dialog.cancel();
+                                        // on ferme la boite de dialogue
                                     }
                                 });
 
@@ -117,7 +117,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             convertView.setTag(viewHolder);
         }
 
-        /** il ne reste plus qu'à remplir notre vue */
+        // il ne reste plus qu'à remplir notre vue
         viewHolder.dateExpense.setText(e.getDate());
         viewHolder.categoryExpense.setText(e.getLabel());
         viewHolder.commentExpense.setText(e.getDetails());
