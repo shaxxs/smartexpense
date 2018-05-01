@@ -99,7 +99,7 @@ public class RefundTrackerActivity extends AppCompatActivity {
                     } else {
                         comment = obj.getString("expenseDetails");
                     }
-                    eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, obj.getInt("refundAmount"), obj.getString("submissionDate")));
+                    eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, Float.parseFloat(obj.getString("refundAmount")), obj.getString("submissionDate")));
                 }
             }
         } catch (InterruptedException | ExecutionException e) {

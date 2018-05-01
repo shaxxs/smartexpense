@@ -70,7 +70,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /** Lien vers la vue Notes de frais */
+                // Lien vers la vue Notes de frais
                 Intent intentReturn = new Intent(ERDetailsActivity.this, ExpenseReportActivity.class);
                 startActivity(intentReturn);
             }
@@ -78,10 +78,10 @@ public class ERDetailsActivity extends AppCompatActivity {
 
         /** Gestion du clic sur le bouton Ajouter une dépense */
         Button addButton = (Button) findViewById(R.id.addExpenseButton);
-        /** si la note a déjà été soumise, on cache le bouton Ajouter une dépense */
+        // si la note a déjà été soumise, on cache le bouton Ajouter une dépense
         if (erSubmissionDate.equals("null")) {
             addButton.setVisibility(View.VISIBLE);
-        /** sinon, on affiche le bouton */
+            // sinon, on affiche le bouton
         } else {
             addButton.setVisibility(View.GONE);
         }
@@ -89,10 +89,10 @@ public class ERDetailsActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /** Lien vers la vue Nouvelle dépense */
+                // Lien vers la vue Nouvelle dépense
                 Intent intentAddExpense = new Intent(ERDetailsActivity.this, NewExpenseActivity.class);
                 startActivity(intentAddExpense);
-                /** on ajoute au fichier SharedPreferences le boolean qui dit qu'on ne vient pas de la page nouvelle dépense */
+                // on ajoute au fichier SharedPreferences le boolean qui dit qu'on ne vient pas de la page nouvelle dépense
                 sharedPreferencesER.edit()
                         .putBoolean(NEW_EXPENSE_REPORT, false)
                         .apply();
@@ -113,8 +113,8 @@ public class ERDetailsActivity extends AppCompatActivity {
                 /* Mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours */
 
                 String submissionDate = "";
-                //String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
-                String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
+                String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
+                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
 
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
