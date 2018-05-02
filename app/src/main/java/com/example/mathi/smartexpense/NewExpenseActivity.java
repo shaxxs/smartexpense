@@ -66,7 +66,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     };
     private ImageView mImageThumbnail;
     private Button buttonProof;
-    private Uri imageUri = null;
+    private Uri imageUri;
+    private String urlProof = "";
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String FILE_EXPENSE_REPORT = "file_expense_report";
     SharedPreferences sharedPreferencesER;
@@ -192,8 +193,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                     if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || String.valueOf(dateDeparture.getText()).equals("") || String.valueOf(dateArrival.getText()).equals("") || String.valueOf(kms.getText()).equals("")) {
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                     } else{
-                        String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+String.valueOf(imageUri)+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+String.valueOf(imageUri)+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                        String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
 
                         HttpGetRequest getRequest=new HttpGetRequest();
                         String result="";
@@ -215,9 +216,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                     if (String.valueOf(amount.getText()).equals("") || String.valueOf(dateExpense.getText()).equals("")) {
                         Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                     } else {
-                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+String.valueOf(imageUri)+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode+"&urlProof="+String.valueOf(imageUri)+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-
+                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                        System.out.println("MON URL : "+myURL);
                         HttpGetRequest getRequest = new HttpGetRequest();
                         String result = "";
                         try {
@@ -245,7 +246,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
             buttonProof.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    urlProof = "justificatif_" +String.valueOf(System.currentTimeMillis()) + ".jpg";
+                    /*int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (permission != PackageManager.PERMISSION_GRANTED) {
 // Nous n'avons pas la permission de stockée dans le
@@ -256,7 +258,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         );
                     } else {
                         takePictureIntent();
-                    }
+                    }*/
                 }
             });
 
