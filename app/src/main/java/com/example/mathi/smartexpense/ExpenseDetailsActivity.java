@@ -161,15 +161,15 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     } else {
                         validationDate.setText(String.valueOf(setDateFormat(obj.getString("dateValidation"))));
                     }
-                    if (obj.isNull("paymentDateT")) {
+                    if (obj.isNull("paymentDateB")) {
                         paymentDate.setText("");
                     } else {
-                        paymentDate.setText(String.valueOf(setDateFormat(obj.getString("paymentDateT"))));
+                        paymentDate.setText(String.valueOf(setDateFormat(obj.getString("paymentDateB"))));
                     }
-                    if (obj.isNull("refundAmountT")) {
+                    if (obj.isNull("refundAmountB")) {
                         refundAmount.setText("");
                     } else {
-                        refundAmount.setText(String.valueOf(obj.getInt("refundAmountT")) + "€");
+                        refundAmount.setText(String.valueOf(obj.getInt("refundAmountB")) + "€");
                     }
                 // si le résultat est vide, l'appli ne crash pas, les champs sont vides
                 } else {
