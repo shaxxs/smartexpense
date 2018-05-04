@@ -94,10 +94,10 @@ public class ERDetailsActivity extends AppCompatActivity {
             }
         });
 
-/* Gestion du clic sur le bouton Soumettre */
+        /** Gestion du clic sur le bouton Soumettre */
         final Button submitButton = (Button) findViewById(R.id.submitButton);
         // si la note a déjà été soumise, on cache le bouton Soumettre
-        if (erSubmissionDate.equals("null")) {
+        if (erSubmissionDate.equals("null") || erSubmissionDate.equals("")) {
             submitButton.setVisibility(View.VISIBLE);
         } else {
             submitButton.setVisibility(View.GONE);
