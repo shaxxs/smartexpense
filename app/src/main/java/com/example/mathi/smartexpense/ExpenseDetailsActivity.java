@@ -102,7 +102,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
                     date.setText(obj.getString("departureDate"));
                     totalAmount.setText(String.valueOf(obj.getInt("expenseTotalT")) + "€");
                     if (obj.isNull("validationState")) {
-                        status.setText("");
+                        status.setText("Non soumise");
                     } else {
                         status.setText(obj.getString("validationState"));
                     }
