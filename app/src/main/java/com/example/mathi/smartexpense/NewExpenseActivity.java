@@ -37,7 +37,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -72,6 +75,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     final String FILE_EXPENSE_REPORT = "file_expense_report";
     SharedPreferences sharedPreferencesER;
     private int erCode;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 int mYear = c.get(Calendar.YEAR); // current year
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                currentDate = String.valueOf(mYear+ "-"+(mMonth+1)+"-"+mDay);
                 Locale.setDefault(Locale.FRANCE);
                 // date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewExpenseActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
@@ -127,6 +132,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 int mYear = c.get(Calendar.YEAR); // current year
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                currentDate = String.valueOf(mYear+ "-"+(mMonth+1)+"-"+mDay);
                 Locale.setDefault(Locale.FRANCE);
                 // date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewExpenseActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
@@ -156,6 +162,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 int mYear = c.get(Calendar.YEAR); // current year
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                currentDate = String.valueOf(mYear+ "-"+(mMonth+1)+"-"+mDay);
                 Locale.setDefault(Locale.FRANCE);
                 // date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewExpenseActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
@@ -190,49 +197,66 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 //Enregistrement de la nouvelle dépense dans la db
                 //Si c'est un trajet
                 if (category.equals("Trajet")) {
-                    if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || String.valueOf(dateDeparture.getText()).equals("") || String.valueOf(dateArrival.getText()).equals("") || String.valueOf(kms.getText()).equals("")) {
-                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
-                    } else{
-                        String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                    try {
+                        if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || String.valueOf(dateDeparture.getText()).equals("") || String.valueOf(dateArrival.getText()).equals("") || String.valueOf(kms.getText()).equals("")) {
+                            Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (((!String.valueOf(dateDeparture).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateDeparture.getText())))) || ((!String.valueOf(dateArrival).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateArrival.getText()))))) {
+                                Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity.getText() + "&destinationCity=" + arrivalCity.getText() + "&departureDate=" + dateDeparture.getText() + "&returnDate=" + dateArrival.getText() + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
 
-                        HttpGetRequest getRequest=new HttpGetRequest();
-                        String result="";
-                        try{
-                            result=getRequest.execute(myURL).get();
-                            System.out.println("Retour HTTPGetRequest : "+result);
-                        }catch(InterruptedException|ExecutionException e){
-                            e.printStackTrace();
+                                HttpGetRequest getRequest = new HttpGetRequest();
+                                String result = "";
+                                try {
+                                    result = getRequest.execute(myURL).get();
+                                    System.out.println("Retour HTTPGetRequest : " + result);
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
+                                if (result.equals("Succes")) {
+                                    Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
+                                    //Lien vers la vue Note de frais
+                                    Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                                    startActivity(intentValid);
+                                }
+                            }
                         }
-                        if(result.equals("Succes")){
-                            Toast.makeText(getApplicationContext(),"Nouvelle dépense ajoutée",Toast.LENGTH_SHORT).show();
-                            //Lien vers la vue Note de frais
-                            Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
-                            startActivity(intentValid);
-                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+
                 //Si c'est un businessexpense
                 } else {
-                    if (String.valueOf(amount.getText()).equals("") || String.valueOf(dateExpense.getText()).equals("")) {
-                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                        System.out.println("MON URL : "+myURL);
-                        HttpGetRequest getRequest = new HttpGetRequest();
-                        String result = "";
-                        try {
-                            result = getRequest.execute(myURL).get();
-                            System.out.println("Retour HTTPGetRequest : " + result);
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
+                    try {
+                        if (String.valueOf(amount.getText()).equals("") || String.valueOf(dateExpense.getText()).equals("")) {
+                            Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if ((!String.valueOf(dateExpense).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateExpense.getText())))) {
+                                Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                System.out.println("MON URL : " + myURL);
+                                HttpGetRequest getRequest = new HttpGetRequest();
+                                String result = "";
+                                try {
+                                    result = getRequest.execute(myURL).get();
+                                    System.out.println("Retour HTTPGetRequest : " + result);
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
+                                if (result.equals("Succes")) {
+                                    Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
+                                    //Lien vers la vue Note de frais
+                                    Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
+                                    startActivity(intentValid);
+                                }
+                            }
                         }
-                        if (result.equals("Succes")) {
-                            Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
-                            //Lien vers la vue Note de frais
-                            Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
-                            startActivity(intentValid);
-                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -353,5 +377,11 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    public Date parseDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = format.parse(date);
+        return newDate;
     }
 }
