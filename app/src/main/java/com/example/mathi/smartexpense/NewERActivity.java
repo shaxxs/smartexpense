@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.mathi.smartexpense.network.HttpGetRequest;
@@ -27,9 +28,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -47,6 +51,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
     final String EXPENSE_REPORT_CODE = "expense_report_code";
     final String EXPENSE_REPORT_DATE = "expense_report_date";
     final String EXPENSE_REPORT_CITY = "expense_report_city";
+    final String EXPENSE_REPORT_SUBMISSION_DATE = "expense_report_submission_date";
+    private String currentDate;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -89,6 +95,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 int mYear = c.get(Calendar.YEAR); // current year
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                currentDate = String.valueOf(mYear+ "-"+(mMonth+1)+"-"+mDay);
                 Locale.setDefault(Locale.FRANCE);
                 // date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewERActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
@@ -106,7 +113,6 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 datePickerDialog.show();
             }
         });
-
 
 /** GESTION DU CHOIX CLIENT **/
 
@@ -144,6 +150,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 String ERDate= (String) thedate.getText();
                 String city = String.valueOf(cityText.getText());
+
                 int customer = 1;
 //                int customer = (int) spinner.getSelectedItem();
                 String comments = String.valueOf(commentsText.getText());
@@ -153,31 +160,47 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                     e.printStackTrace();
                 }
 
-                //Appel de la fonction pour créer une note de frais
-                String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
-                //String myURL2="http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
-
-                HttpGetRequest getRequest = new HttpGetRequest();
                 try {
-                    result2 = getRequest.execute(myURL2).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                    if ((!String.valueOf(ERDate).equals("")) && parseDate(currentDate).before(parseDate(ERDate))) {
+                        Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (String.valueOf(ERDate).equals("") || String.valueOf(city).equals("")) {
+                            Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Appel de la fonction pour créer une note de frais
+                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
+                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city + "&expenseReportComment=" + comments + "&idUser=" + idUser + "&idCustomer=" + customer;
+
+                            HttpGetRequest getRequest = new HttpGetRequest();
+                            try {
+                                result2 = getRequest.execute(myURL2).get();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("Retour HTTPGetRequest ExpenseReport : " + result2);
+
+
+                    /* lien vers la vue ajouter une dépense */
+                            Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
+                    /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
+                            startActivity(intent);
+                            String submissionDate = "";
+                            SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
+                            sharedPreferencesER.edit()
+                                    .putString(EXPENSE_REPORT_CITY, city)
+                                    .putInt(EXPENSE_REPORT_CODE, Integer.parseInt(result2))
+                                    .putString(EXPENSE_REPORT_DATE, ERDate)
+                                    .putString(EXPENSE_REPORT_SUBMISSION_DATE, submissionDate)
+                                    .apply();
+                        }
+
+                    }
+
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Retour HTTPGetRequest ExpenseReport : " + result2);
-
-                /* lien vers la vue ajouter une dépense */
-                Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
-                /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
-                startActivity(intent);
-
-                SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
-                sharedPreferencesER.edit()
-                        .putString(EXPENSE_REPORT_CITY, city)
-                        .putInt(EXPENSE_REPORT_CODE, Integer.parseInt(result2))
-                        .putString(EXPENSE_REPORT_DATE, ERDate)
-                        .apply();
 
             }
         });
@@ -213,6 +236,12 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Another interface callback
+    }
+
+    public Date parseDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = format.parse(date);
+        return newDate;
     }
 }
 
