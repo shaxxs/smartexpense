@@ -108,7 +108,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
             String result = getRequest.execute(myURL).get();
             System.out.println("Retour HTTPGetRequest : " + result);
             JSONArray array = new JSONArray(result);
-            for (int i= 0; i < 6; i++) {
+            for (int i= 0; i < array.length(); i++) {
                 JSONObject obj = new JSONObject(array.getString(i));
                 String comment = "";
                 if (obj.isNull("expenseReportComment")) {
