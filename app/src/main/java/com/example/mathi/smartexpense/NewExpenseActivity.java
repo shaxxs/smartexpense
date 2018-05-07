@@ -271,7 +271,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 @Override
                 public void onClick(View view) {
                     urlProof = "justificatif_" +String.valueOf(System.currentTimeMillis()) + ".jpg";
-                    /*int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (permission != PackageManager.PERMISSION_GRANTED) {
 // Nous n'avons pas la permission de stockée dans le
@@ -282,7 +282,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                         );
                     } else {
                         takePictureIntent();
-                    }*/
+                    }
                 }
             });
 
@@ -333,6 +333,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         // display picture on ImageView
         ImageView imageView = findViewById(R.id.mImageThumbnail);
         imageView.setVisibility(View.VISIBLE);
+        Button btnAddProof = findViewById(R.id.btnAddProof);
+        btnAddProof.setVisibility(View.GONE);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
