@@ -23,26 +23,28 @@ import java.util.concurrent.ExecutionException;
 
 public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
 
-    // expenseReports est la liste des models à afficher
+    /** L'adapter prend en entrée la liste des dépenses et le layout et génère pour chaque dépense une cellule formatée */
+
+    // expenseReports est la liste à afficher
     public ExpenseReportAdapter(Context context, List<ExpenseReport> expenseReports) {
         super(context, 0, expenseReports);
     }
 
+    // fonction qui gère la composition d'une cellule de la ListView
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
+            // on insuffle dans la cellule le layout créé pour la cellule
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_expense_report,parent, false);
         }
 
-        // getItem(position) va récupérer l'item [position] de la List<ExpenseReport> expenseReports
+        // la note de frais située à X position dans la liste
         final ExpenseReport er = getItem(position);
 
-
-        ListViewExpenseReport viewHolder = (ListViewExpenseReport) convertView.getTag();
-
-
-        viewHolder = new ListViewExpenseReport();
+        // instance du "controlleur" de la cellule
+        ListViewExpenseReport viewHolder = new ListViewExpenseReport();
+        // on fait le lien avec les TextView du layout de cellule RowExpense
         viewHolder.date = (TextView) convertView.findViewById(R.id.dateExpenseReport);
         viewHolder.city = (TextView) convertView.findViewById(R.id.cityExpenseReport);
         viewHolder.comment = (TextView) convertView.findViewById(R.id.commentExpenseReport);
@@ -80,7 +82,6 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
                                     String result = "";
                                     try {
                                         result = getRequest.execute(myURL).get();
-                                        System.out.println("Retour HTTPGetRequest : " + result);
                                     } catch (InterruptedException | ExecutionException e) {
                                         e.printStackTrace();
                                     }
@@ -110,7 +111,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
         }
         convertView.setTag(viewHolder);
 
-        // il ne reste plus qu'à remplir notre vue
+        // on remplit la cellule avec les données de la note de frais
         viewHolder.date.setText(er.getDate());
         viewHolder.city.setText(er.getCity());
         viewHolder.comment.setText(er.getComment());
