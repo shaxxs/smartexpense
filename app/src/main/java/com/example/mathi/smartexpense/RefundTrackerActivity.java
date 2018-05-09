@@ -42,7 +42,7 @@ public class RefundTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refund_tracker);
 
-       /* Récupération des données de SharedPreferences */
+/** Récupération des données du fichier SharedPreferences */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
@@ -70,7 +70,7 @@ public class RefundTrackerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /* Gestion du clic sur le bouton retour */
+/** Gestion du clic sur le bouton retour */
         Button buttonReturn = findViewById(R.id.returnButton);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,25 +81,34 @@ public class RefundTrackerActivity extends AppCompatActivity {
             }
         });
 
-        /* Gestion de la ListView */
+/** Gestion de la ListView */
         listViewRefunds = findViewById(R.id.listViewRefunds);
+        // liste des dépenses qui seront injectées dans la ListView
         List<Expense> eList = new ArrayList<Expense>();
+        // URL de l'API qui récupère les données des dépenses
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/user?idUser="+idUser;
         //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/user?idUser="+idUser;
+        // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
+            // résultat de la requete http
             String result = getRequest.execute(myURL).get();
-            System.out.println("Retour HTTPGetRequest : " + result);
+            // tableau JSON qui contient le résultat
             JSONArray array = new JSONArray(result);
+            // boucle sur la longueur du tableau JSON qui contient le résultat de la requete
             for (int i= 0; i < array.length(); i++) {
+                // à chaque tour de boucle, on récupère un objet JSON du tableau, qui contient les données d'une dépense, 1 dépense = 1 objet
                 JSONObject obj = new JSONObject(array.getString(i));
+                // si le champ refundAmount de la dépense n'est pas vide
                 if (!obj.isNull("refundAmount")) {
                     String comment = "";
+                    // si le champ expenseDetails de la dépense est vide
                     if (obj.isNull("expenseDetails")) {
                         comment = "";
                     } else {
                         comment = obj.getString("expenseDetails");
                     }
+                    // on ajoute la dépense à la liste
                     eList.add(new Expense(obj.getInt("idExpense"), obj.getString("expenseDate"), obj.getString("expenseLabel"), comment, Float.parseFloat(obj.getString("refundAmount")), obj.getString("submissionDate")));
                 }
             }
@@ -109,22 +118,26 @@ public class RefundTrackerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // génère les cellules de la ListView
         adapter = new ExpenseAdapter(RefundTrackerActivity.this, eList);
+        // affecte les cellules à notre ListView
         listViewRefunds.setAdapter(adapter);
 
-/* Gestion du clic sur une cellule de la ListView */
+/** Gestion du clic sur une cellule de la ListView */
         listViewRefunds.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> adapterView,
                                     View view, int position, long id) {
 
+            // On ajoute les données de la dépense à notre fichier sharedpreferences
             SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
             sharedPreferencesER.edit()
                     .putString(EXPENSE_LABEL, adapter.getItem(position).getLabel())
                     .putInt(EXPENSE_ID, adapter.getItem(position).getIdExpense())
                     .putBoolean(REFUND_TRACKER, true)
                     .apply();
+            // lien vers la page Dépense - Détails
             Intent intentNextPage = new Intent(RefundTrackerActivity.this, ExpenseDetailsActivity.class);
             startActivity(intentNextPage);
             }

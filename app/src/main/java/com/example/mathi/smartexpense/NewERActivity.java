@@ -161,9 +161,11 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
 
                 try {
+                    // si la date saisie est supérieure à la date du jour
                     if ((!String.valueOf(ERDate).equals("")) && parseDate(currentDate).before(parseDate(ERDate))) {
                         Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                     } else {
+                        // si les champs date et ville sont vides
                         if (String.valueOf(ERDate).equals("") || String.valueOf(city).equals("")) {
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
@@ -184,7 +186,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
                     /* lien vers la vue ajouter une dépense */
                             Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
-                    /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
+                    /* Je transmets à la vue suivante les données de la note de frais pour les relier aux dépenses */
                             startActivity(intent);
                             String submissionDate = "";
                             SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
@@ -238,6 +240,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         // Another interface callback
     }
 
+    /** fonction qui parse du String en Date */
     public Date parseDate(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = format.parse(date);

@@ -28,6 +28,7 @@ public class Expense {
         this.submissionDate = submissionDate;
     }
 
+    // fonction qui transforme la date format US au format FR
     public String setDateFormat(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = format.parse(date);
