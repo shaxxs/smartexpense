@@ -212,9 +212,13 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                             if (((!String.valueOf(dateDeparture).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateDeparture.getText())))) || ((!String.valueOf(dateArrival).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateArrival.getText()))))) {
                                 Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                             } else {
+                                // on remplace les espaces par des underscores
+                                String departureCity_replace = String.valueOf(departureCity.getText()).replace(" ", "_");
+                                String arrivalCity_replace = String.valueOf(arrivalCity.getText()).replace(" ", "_");
+
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity.getText()+"&destinationCity="+arrivalCity.getText()+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity.getText() + "&destinationCity=" + arrivalCity.getText() + "&departureDate=" + dateDeparture.getText() + "&returnDate=" + dateArrival.getText() + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity_replace+"&destinationCity="+arrivalCity_replace+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity_replace + "&destinationCity=" + arrivalCity_replace + "&departureDate=" + dateDeparture.getText() + "&returnDate=" + dateArrival.getText() + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
 
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
@@ -249,9 +253,12 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                             if ((!String.valueOf(dateExpense).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateExpense.getText())))) {
                                 Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                             } else {
+                                // on remplace les espaces par des underscores
+                                String beDetails_replace = String.valueOf(details.getText()).replace(" ", "_");
+
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + details.getText() + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
                                 String result = "";
