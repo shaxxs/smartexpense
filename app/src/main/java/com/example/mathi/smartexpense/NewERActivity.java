@@ -150,10 +150,13 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 String ERDate= (String) thedate.getText();
                 String city = String.valueOf(cityText.getText());
+                String city_replace = city.replace(" ", "_");
+
 
                 int customer = 1;
 //                int customer = (int) spinner.getSelectedItem();
                 String comments = String.valueOf(commentsText.getText());
+                String comments_replace = comments.replace(" ", "_");
                 try {
                     idUser = userProfile.getInt("idUser");
                 } catch (JSONException e) {
@@ -161,15 +164,17 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
 
                 try {
+                    // si la date saisie est supérieure à la date du jour
                     if ((!String.valueOf(ERDate).equals("")) && parseDate(currentDate).before(parseDate(ERDate))) {
                         Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                     } else {
+                        // si les champs date et ville sont vides
                         if (String.valueOf(ERDate).equals("") || String.valueOf(city).equals("")) {
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
                             //Appel de la fonction pour créer une note de frais
-                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
-                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city + "&expenseReportComment=" + comments + "&idUser=" + idUser + "&idCustomer=" + customer;
+                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
+                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
 
                             HttpGetRequest getRequest = new HttpGetRequest();
                             try {
@@ -184,7 +189,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
                     /* lien vers la vue ajouter une dépense */
                             Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
-                    /* Je transmets à la vue suivante l'id de la note de frais pour les relier aux dépenses */
+                    /* Je transmets à la vue suivante les données de la note de frais pour les relier aux dépenses */
                             startActivity(intent);
                             String submissionDate = "";
                             SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
@@ -238,6 +243,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         // Another interface callback
     }
 
+    /** fonction qui parse du String en Date */
     public Date parseDate(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = format.parse(date);

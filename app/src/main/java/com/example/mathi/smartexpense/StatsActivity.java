@@ -30,7 +30,7 @@ public class StatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-        /* récupération des données stockées dans le fichier SharedPreferences */
+/** récupération des données stockées dans le fichier SharedPreferences */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
@@ -57,7 +57,7 @@ public class StatsActivity extends AppCompatActivity {
         }
 
 
-        /* Gestion du clic sur le bouton retour */
+/** Gestion du clic sur le bouton retour */
         Button bouton = findViewById(R.id.returnButton);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class StatsActivity extends AppCompatActivity {
             }
         });
 
-        /* Gestion de la WebView qui affiche le camembert */
+/** Gestion de la WebView qui affiche le camembert */
         WebView w = (WebView) findViewById(R.id.statPie);
         w.getSettings().setJavaScriptEnabled(true);
         final Activity activity = this;
@@ -89,10 +89,11 @@ public class StatsActivity extends AppCompatActivity {
 
         w.getSettings().setLoadWithOverviewMode(true);
         w.getSettings().setUseWideViewPort(true);
+        // la webview charge l'URL de l'API qui affiche le camembert
         w.loadUrl("http://www.gyejacquot-pierre.fr/API/public/piechart?idUser="+idUser);
         //w.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/piechart?idUser="+idUser);
 
-        /* Gestion de la WebView qui affiche les stats en colonnes */
+/** Gestion de la WebView qui affiche les stats en colonnes */
         WebView w2 = (WebView) findViewById(R.id.statColumn);
         w2.getSettings().setJavaScriptEnabled(true);
         final Activity activity2 = this;
@@ -113,6 +114,7 @@ public class StatsActivity extends AppCompatActivity {
 
         w2.getSettings().setLoadWithOverviewMode(true);
         w2.getSettings().setUseWideViewPort(true);
+        // la webview charge l'URL de l'API qui affiche les colonnes
         w2.loadUrl("http://www.gyejacquot-pierre.fr/API/public/columnchart?idUser="+idUser);
         //w2.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/columnchart?idUser="+idUser);
 
