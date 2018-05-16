@@ -150,10 +150,13 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 String ERDate= (String) thedate.getText();
                 String city = String.valueOf(cityText.getText());
+                String city_replace = city.replace(" ", "_");
+
 
                 int customer = 1;
 //                int customer = (int) spinner.getSelectedItem();
                 String comments = String.valueOf(commentsText.getText());
+                String comments_replace = comments.replace(" ", "_");
                 try {
                     idUser = userProfile.getInt("idUser");
                 } catch (JSONException e) {
@@ -170,8 +173,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
                             //Appel de la fonction pour créer une note de frais
-                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city+"&expenseReportComment="+comments+"&idUser="+idUser+"&idCustomer="+customer;
-                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city + "&expenseReportComment=" + comments + "&idUser=" + idUser + "&idCustomer=" + customer;
+                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
+                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
 
                             HttpGetRequest getRequest = new HttpGetRequest();
                             try {
