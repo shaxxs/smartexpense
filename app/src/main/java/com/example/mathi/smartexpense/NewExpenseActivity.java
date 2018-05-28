@@ -112,14 +112,15 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // au clic, on affiche dans la vue la date sélectionnée
-                                dateExpense.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                dateExpense.setText(dayOfMonth + "/"
+                                        + (monthOfYear + 1) + "/" + year);
                             }
 
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
+
 
 /** Gestion du choix de la date de départ du trajet **/
 
@@ -144,14 +145,15 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // au clic, on affiche dans la vue la date sélectionnée
-                                dateDeparture.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                dateDeparture.setText(dayOfMonth + "/"
+                                        + (monthOfYear + 1) + "/" + year);
                             }
 
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
+
 
 /** Gestion du choix de la date d'arrivée du trajet **/
 
@@ -176,14 +178,15 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // au clic, on affiche dans la vue la date sélectionnée
-                                dateArrival.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                dateArrival.setText(dayOfMonth + "/"
+                                        + (monthOfYear + 1) + "/" + year);
                             }
 
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
+
 
 /** Gestion du clic sur le bouton Valider */
 
@@ -203,13 +206,27 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 //Enregistrement de la nouvelle dépense dans la db
                 /** Si c'est un trajet */
                 if (category.equals("Trajet")) {
+                    // on parse les dates au format US
+                    String dateDepartureUS = "";
+                    try {
+                        dateDepartureUS = parseDateToUS(String.valueOf(dateDeparture.getText()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    String dateArrivalUS = "";
+                    try {
+                        dateArrivalUS = parseDateToUS(String.valueOf(dateArrival.getText()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         // si les champs montant, ville de départ, d'arrivée, date de départ, d'arrivée ou kms sont vides
-                        if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || String.valueOf(dateDeparture.getText()).equals("") || String.valueOf(dateArrival.getText()).equals("") || String.valueOf(kms.getText()).equals("")) {
+                        if (String.valueOf(amount.getText()).equals("") || String.valueOf(departureCity.getText()).equals("") || String.valueOf(arrivalCity.getText()).equals("") || dateDepartureUS.equals("") || dateArrivalUS.equals("") || String.valueOf(kms.getText()).equals("")) {
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
                             // si la date d'arrivée ou de départ est supérieure à la date du jour
-                            if (((!String.valueOf(dateDeparture).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateDeparture.getText())))) || ((!String.valueOf(dateArrival).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateArrival.getText()))))) {
+                            if (((!dateDepartureUS.equals("")) && parseDate(currentDate).before(parseDate(dateDepartureUS))) || ((!dateArrivalUS.equals("")) && parseDate(currentDate).before(parseDate(dateArrivalUS)))) {
                                 Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                             } else {
                                 // on remplace les espaces par des underscores
@@ -217,8 +234,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                                 String arrivalCity_replace = String.valueOf(arrivalCity.getText()).replace(" ", "_");
 
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity_replace+"&destinationCity="+arrivalCity_replace+"&departureDate="+dateDeparture.getText()+"&returnDate="+dateArrival.getText()+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity_replace + "&destinationCity=" + arrivalCity_replace + "&departureDate=" + dateDeparture.getText() + "&returnDate=" + dateArrival.getText() + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity_replace+"&destinationCity="+arrivalCity_replace+"&departureDate="+dateDepartureUS+"&returnDate="+dateArrivalUS+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity_replace + "&destinationCity=" + arrivalCity_replace + "&departureDate=" + dateDepartureUS + "&returnDate=" + dateArrivalUS + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
 
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
@@ -244,21 +261,28 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
                 /** Si c'est un businessexpense */
                 } else {
+                    // on parse la date au format US
+                    String dateExpenseUS = "";
+                    try {
+                        dateExpenseUS = parseDateToUS(String.valueOf(dateExpense.getText()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         // si les champs montant ou date sont vides
-                        if (String.valueOf(amount.getText()).equals("") || String.valueOf(dateExpense.getText()).equals("")) {
+                        if (String.valueOf(amount.getText()).equals("") || dateExpenseUS.equals("")) {
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
                             // si la date est supérieure à la date du jour
-                            if ((!String.valueOf(dateExpense).equals("")) && parseDate(currentDate).before(parseDate(String.valueOf(dateExpense.getText())))) {
+                            if ((!dateExpenseUS.equals("")) && parseDate(currentDate).before(parseDate(dateExpenseUS))) {
                                 Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                             } else {
                                 // on remplace les espaces par des underscores
                                 String beDetails_replace = String.valueOf(details.getText()).replace(" ", "_");
 
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpense.getText() + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpenseUS + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
+                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" +dateExpenseUS + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
                                 String result = "";
@@ -408,5 +432,14 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = format.parse(date);
         return newDate;
+    }
+
+    /** fonction qui change la Date format FR au format US */
+    public String parseDateToUS(String date) throws ParseException {
+        SimpleDateFormat formatFR = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatUS = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFR = formatFR.parse(date);
+        String dateUS = formatUS.format(dateFR);
+        return dateUS;
     }
 }
