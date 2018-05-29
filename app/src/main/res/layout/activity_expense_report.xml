@@ -17,20 +17,21 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:background="@color/blue"
+        android:layout_weight="0"
         android:text="NOTES DE FRAIS" />
 
     <ListView
         android:id="@+id/listExpenseReport"
         android:layout_width="370dp"
         android:layout_gravity="center_horizontal"
-        android:layout_height="349dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:layout_marginBottom="10dp" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
+        android:layout_height="80dp"
         android:orientation="horizontal">
 
         <Button
