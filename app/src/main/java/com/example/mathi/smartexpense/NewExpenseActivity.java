@@ -2,6 +2,7 @@ package com.example.mathi.smartexpense;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,11 +13,14 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,19 +34,34 @@ import android.widget.Toast;
 
 import com.example.mathi.smartexpense.model.ExpenseReport;
 import com.example.mathi.smartexpense.network.HttpGetRequest;
+import com.example.mathi.smartexpense.network.ImageProcess;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class NewExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -57,6 +76,14 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     private EditText details;
     private EditText durationTravel;
     private String category;
+    private String proofTitle;
+    Bitmap bitmap;
+    String ImageTag = "image_tag" ;
+    String ImageName = "image_data" ;
+    ProgressDialog progressDialog ;
+    ByteArrayOutputStream byteArrayOutputStream ;
+    byte[] byteArray ;
+    String ConvertImage ;
   
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     //permet de demander les droits video et audio
@@ -88,6 +115,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         amount = (EditText) findViewById(R.id.amount);
         details = (EditText) findViewById(R.id.details);
         durationTravel = (EditText) findViewById(R.id.durationTravel);
+        byteArrayOutputStream = new ByteArrayOutputStream();
 
 /** Gestion du choix de la date de la dépense **/
 
@@ -234,8 +262,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                                 String arrivalCity_replace = String.valueOf(arrivalCity.getText()).replace(" ", "_");
 
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity_replace+"&destinationCity="+arrivalCity_replace+"&departureDate="+dateDepartureUS+"&returnDate="+dateArrivalUS+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity_replace + "&destinationCity=" + arrivalCity_replace + "&departureDate=" + dateDepartureUS + "&returnDate=" + dateArrivalUS + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL="http://www.gyejacquot-pierre.fr/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration="+String.valueOf(durationTravel.getText())+"&departureCity="+departureCity_replace+"&destinationCity="+arrivalCity_replace+"&departureDate="+dateDepartureUS+"&returnDate="+dateArrivalUS+"&km="+String.valueOf(kms.getText())+"&expenseReportCodeT="+erCode+"&urlProof="+urlProof+"&titleProof="+proofTitle;
+                                //String myURL = "http://10.0.2.2/API/public/travel/create?expenseTotalT="+String.valueOf(amount.getText())+"&travelDuration=" + String.valueOf(durationTravel.getText()) + "&departureCity=" + departureCity_replace + "&destinationCity=" + arrivalCity_replace + "&departureDate=" + dateDepartureUS + "&returnDate=" + dateArrivalUS + "&km=" + String.valueOf(kms.getText()) + "&expenseReportCodeT=" + erCode + "&urlProof=" + urlProof + "&titleProof="+proofTitle;
 
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
@@ -248,6 +276,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                                 }
                                 // si la requete a été correctement exécutée
                                 if (result.equals("Succes")) {
+                                    if (!urlProof.equals("")){
+                                        UploadImageToServer();
+                                    }
                                     Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
                                     //Lien vers la vue Note de frais
                                     Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
@@ -281,8 +312,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                                 String beDetails_replace = String.valueOf(details.getText()).replace(" ", "_");
 
                                 // URL de l'API qui récupère les données des notes de frais
-                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpenseUS + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof=justificatif_"+String.valueOf(System.currentTimeMillis());
-                                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" +dateExpenseUS + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof=justificatif_" + String.valueOf(System.currentTimeMillis());
+                                String myURL = "http://www.gyejacquot-pierre.fr/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" + dateExpenseUS + "&expenseReportCodeB=" + erCode+"&urlProof="+urlProof+"&titleProof="+proofTitle;
+                                //String myURL = "http://10.0.2.2/API/public/businessexpense/create?expenseTotalB=" + String.valueOf(amount.getText()) + "&businessExpenseLabel=" + category + "&businessExpenseDetails=" + beDetails_replace + "&businessExpenseDate=" +dateExpenseUS + "&expenseReportCodeB=" + erCode + "&urlProof=" + urlProof + "&titleProof="+proofTitle;
                                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                                 HttpGetRequest getRequest = new HttpGetRequest();
                                 String result = "";
@@ -294,6 +325,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                                 }
                                 // si la requete a été correctement exécutée
                                 if (result.equals("Succes")) {
+                                    if (!urlProof.equals("")){
+                                        UploadImageToServer();
+                                    }
                                     Toast.makeText(getApplicationContext(), "Nouvelle dépense ajoutée", Toast.LENGTH_SHORT).show();
                                     //Lien vers la vue Note de frais
                                     Intent intentValid = new Intent(NewExpenseActivity.this, ERDetailsActivity.class);
@@ -310,11 +344,14 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
 /** Gestion du clic sur le bouton Ajouter un justificatif */
         buttonProof = findViewById(R.id.btnAddProof);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         Log.v("Path image", this.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
         buttonProof.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                urlProof = "justificatif_" +String.valueOf(System.currentTimeMillis()) + ".jpg";
+                proofTitle = "justificatif_" + String.valueOf(System.currentTimeMillis());
+                urlProof = "http://www.gyejacquot-pierre.fr/API/src/Resources/upload/" +proofTitle + ".jpg";
                 int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -381,9 +418,60 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         btnAddProof.setVisibility(View.GONE);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
+        bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
         imageView.setImageBitmap(bitmap);
         imageView.setRotation(90);
+    }
+
+/** Pour traiter l'envoi de l'image sur le serveur */
+    public void UploadImageToServer(){
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+
+        byteArray = byteArrayOutputStream.toByteArray();
+
+        ConvertImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+
+            @Override
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(NewExpenseActivity.this,"Image en cours d'envoi","Veuillez patienter",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+
+                progressDialog.dismiss();
+
+                Toast.makeText(NewExpenseActivity.this,"Image envoyée",Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                ImageProcess imageProcessClass = new ImageProcess();
+
+                HashMap<String,String> HashMapParams = new HashMap<String,String>();
+
+                HashMapParams.put(ImageTag, proofTitle);
+
+                HashMapParams.put(ImageName, ConvertImage);
+
+                //String FinalData = imageProcessClass.ImageHttpRequest("http://10.0.2.2/API/public/upload", HashMapParams);
+                String FinalData = imageProcessClass.ImageHttpRequest("http://www.gyejacquot-pierre.fr/API/public/upload", HashMapParams);
+
+                return FinalData;
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
     }
 
 /** Méthode qui ajoute un écouteur d'évènement à la liste déroulante */

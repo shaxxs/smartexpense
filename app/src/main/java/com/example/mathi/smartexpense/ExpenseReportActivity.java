@@ -104,7 +104,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
         List<ExpenseReport> erList = new ArrayList<ExpenseReport>();
         // URL de l'API qui récupère les données des notes de frais
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
+        //String myURL = "http://10.0.2.2/API/public/expensereports?idUser="+idUser;
         // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
         HttpGetRequest getRequest = new HttpGetRequest();
         try {

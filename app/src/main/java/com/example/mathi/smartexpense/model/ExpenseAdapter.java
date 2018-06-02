@@ -80,7 +80,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
                                     dialog.cancel();
                                     // on envoie la requete http qui supprime la dépense
                                     String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/expense?idExpense="+String.valueOf(e.getIdExpense())+"&category="+String.valueOf(e.getLabel());
-                                    //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/delete/expense?idExpense=" + String.valueOf(e.getIdExpense()) + "&category=" + String.valueOf(e.getLabel());
+                                    //String myURL = "http://10.0.2.2/API/public/delete/expense?idExpense=" + String.valueOf(e.getIdExpense()) + "&category=" + String.valueOf(e.getLabel());
 
                                     HttpGetRequest getRequest = new HttpGetRequest();
                                     String result = "";

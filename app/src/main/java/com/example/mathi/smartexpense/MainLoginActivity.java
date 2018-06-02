@@ -36,7 +36,7 @@ public class MainLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String myURL = "http://www.gyejacquot-pierre.fr/API/public/user?userEmail=" +
                             login.getText().toString() + "&userPassword=" + pass.getText().toString();
-                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/user?userEmail=" +
+                //String myURL = "http://10.0.2.2/API/public/user?userEmail=" +
                   //      login.getText().toString() + "&userPassword=" + pass.getText().toString();
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
