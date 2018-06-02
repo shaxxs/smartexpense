@@ -73,7 +73,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         /** Gestion du clic sur le bouton Ajouter une dépense */
         Button addButton = (Button) findViewById(R.id.addExpenseButton);
         // si la note a déjà été soumise, on cache le bouton Ajouter une dépense
-        if (erSubmissionDate.equals("null") || erSubmissionDate.equals("")) {
+        if (erSubmissionDate.equals("null") || erSubmissionDate.equals("") || adapter.getCount() < 0) {
             addButton.setVisibility(View.VISIBLE);
         // sinon, on affiche le bouton
         } else {
@@ -105,7 +105,7 @@ public class ERDetailsActivity extends AppCompatActivity {
                 String submissionDate = "";
                 // URL de l'API qui permet la mise à jour de la note de frais dans la db : création de la date de soumission + état de validation à En cours pour les dépenses
                 String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereport/update?expenseReportCode="+erCode;
-                //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/update?expenseReportCode="+erCode;
+                //String myURL = "http://10.0.2.2/API/public/expensereport/update?expenseReportCode="+erCode;
                 // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
                 HttpGetRequest getRequest = new HttpGetRequest();
                 try {
@@ -183,7 +183,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         List<Expense> eList = new ArrayList<Expense>();
         // URL de l'API qui récupère les données des dépenses de la note de frais
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/expenses/er?expenseReportCode="+erCode;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expenses/er?expenseReportCode="+erCode;
+        //String myURL = "http://10.0.2.2/API/public/expenses/er?expenseReportCode="+erCode;
         // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
         HttpGetRequest getRequest = new HttpGetRequest();
         try {

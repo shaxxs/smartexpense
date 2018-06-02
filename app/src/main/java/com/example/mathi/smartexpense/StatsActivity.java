@@ -91,7 +91,7 @@ public class StatsActivity extends AppCompatActivity {
         w.getSettings().setUseWideViewPort(true);
         // la webview charge l'URL de l'API qui affiche le camembert
         w.loadUrl("http://www.gyejacquot-pierre.fr/API/public/piechart?idUser="+idUser);
-        //w.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/piechart?idUser="+idUser);
+        //w.loadUrl("http://10.0.2.2/API/public/piechart?idUser="+idUser);
 
 /** Gestion de la WebView qui affiche les stats en colonnes */
         WebView w2 = (WebView) findViewById(R.id.statColumn);
@@ -116,7 +116,7 @@ public class StatsActivity extends AppCompatActivity {
         w2.getSettings().setUseWideViewPort(true);
         // la webview charge l'URL de l'API qui affiche les colonnes
         w2.loadUrl("http://www.gyejacquot-pierre.fr/API/public/columnchart?idUser="+idUser);
-        //w2.loadUrl("http://10.0.2.2/smartExpenseApi/API/public/columnchart?idUser="+idUser);
+        //w2.loadUrl("http://10.0.2.2/API/public/columnchart?idUser="+idUser);
 
     }
 }

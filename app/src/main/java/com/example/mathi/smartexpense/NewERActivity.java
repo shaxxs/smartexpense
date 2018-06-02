@@ -181,7 +181,7 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                         } else {
                             //Appel de la fonction pour créer une note de frais
                             String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDateUS+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
-                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDateUS + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
+                            //String myURL2 = "http://10.0.2.2/API/public/expensereport/add?expenseReportDate=" + ERDateUS + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
 
                             HttpGetRequest getRequest = new HttpGetRequest();
                             try {

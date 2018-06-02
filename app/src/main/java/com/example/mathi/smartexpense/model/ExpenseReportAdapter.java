@@ -76,7 +76,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
                                     dialog.cancel();
                                     // on envoie la requete http qui supprime la note de frais
                                     String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getCode());
-                                    //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getCode());
+                                    //String myURL = "http://10.0.2.2/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getCode());
 
                                     HttpGetRequest getRequest = new HttpGetRequest();
                                     String result = "";
