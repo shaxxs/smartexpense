@@ -105,8 +105,8 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                thedate.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                thedate.setText(dayOfMonth + "/"
+                                        + (monthOfYear + 1) + "/" + year);
                             }
 
                         }, mYear, mMonth, mDay);
@@ -151,6 +151,13 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 String ERDate= (String) thedate.getText();
                 String city = String.valueOf(cityText.getText());
                 String city_replace = city.replace(" ", "_");
+                // on parse la date au format US
+                String ERDateUS = "";
+                try {
+                    ERDateUS = parseDateToUS(ERDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
                 int customer = 1;
@@ -165,16 +172,16 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 try {
                     // si la date saisie est supérieure à la date du jour
-                    if ((!String.valueOf(ERDate).equals("")) && parseDate(currentDate).before(parseDate(ERDate))) {
+                    if ((!String.valueOf(ERDateUS).equals("")) && parseDate(currentDate).before(parseDate(ERDateUS))) {
                         Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
                     } else {
                         // si les champs date et ville sont vides
-                        if (String.valueOf(ERDate).equals("") || String.valueOf(city).equals("")) {
+                        if (String.valueOf(ERDateUS).equals("") || String.valueOf(city).equals("")) {
                             Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                         } else {
                             //Appel de la fonction pour créer une note de frais
-                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDate+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
-                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDate + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
+                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDateUS+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
+                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDateUS + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
 
                             HttpGetRequest getRequest = new HttpGetRequest();
                             try {
@@ -243,11 +250,20 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         // Another interface callback
     }
 
-    /** fonction qui parse du String en Date */
+    /** fonction qui parse un String en Date */
     public Date parseDate(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = format.parse(date);
         return newDate;
+    }
+
+    /** fonction qui change la Date format FR au format US */
+    public String parseDateToUS(String date) throws ParseException {
+        SimpleDateFormat formatFR = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatUS = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFR = formatFR.parse(date);
+        String dateUS = formatUS.format(dateFR);
+        return dateUS;
     }
 }
 
