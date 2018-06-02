@@ -73,7 +73,7 @@ public class ERDetailsActivity extends AppCompatActivity {
         /** Gestion du clic sur le bouton Ajouter une dépense */
         Button addButton = (Button) findViewById(R.id.addExpenseButton);
         // si la note a déjà été soumise, on cache le bouton Ajouter une dépense
-        if (erSubmissionDate.equals("null") || erSubmissionDate.equals("") || adapter.getCount() < 0) {
+        if (erSubmissionDate.equals("null") || erSubmissionDate.equals("")) {
             addButton.setVisibility(View.VISIBLE);
         // sinon, on affiche le bouton
         } else {
