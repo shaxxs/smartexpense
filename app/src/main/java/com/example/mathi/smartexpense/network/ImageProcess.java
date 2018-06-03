@@ -1,10 +1,8 @@
 package com.example.mathi.smartexpense.network;
 
-import android.app.ProgressDialog;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -18,7 +16,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Created by mathi on 31/05/2018.
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
  */
 
 public class ImageProcess {
