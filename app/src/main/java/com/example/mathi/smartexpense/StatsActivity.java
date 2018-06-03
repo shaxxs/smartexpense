@@ -16,49 +16,50 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.mathi.smartexpense.model.User;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+/**
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
+ */
 
 public class StatsActivity extends AppCompatActivity {
 
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
-    int idUser;
+
+    private User user = new User();
+
+    Button bouton;
+    WebView w;
+    WebView w2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-/** récupération des données stockées dans le fichier SharedPreferences */
+        bouton = findViewById(R.id.returnButton);
+        w = (WebView) findViewById(R.id.statPie);
+        w2 = (WebView) findViewById(R.id.statColumn);
+
+
+        /** Récupération des données stockées dans le fichier SharedPreferences */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
         JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
-            }
+            user = user.jsonToUser(userProfile);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        try {
-            if (userProfile != null) {
-                idUser = userProfile.getInt("idUser");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-/** Gestion du clic sur le bouton retour */
-        Button bouton = findViewById(R.id.returnButton);
+        /** Gestion du clic sur le bouton retour */
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +69,7 @@ public class StatsActivity extends AppCompatActivity {
             }
         });
 
-/** Gestion de la WebView qui affiche le camembert */
-        WebView w = (WebView) findViewById(R.id.statPie);
+        /** Gestion de la WebView qui affiche le camembert */
         w.getSettings().setJavaScriptEnabled(true);
         final Activity activity = this;
 
@@ -90,11 +90,10 @@ public class StatsActivity extends AppCompatActivity {
         w.getSettings().setLoadWithOverviewMode(true);
         w.getSettings().setUseWideViewPort(true);
         // la webview charge l'URL de l'API qui affiche le camembert
-        w.loadUrl("http://www.gyejacquot-pierre.fr/API/public/piechart?idUser="+idUser);
-        //w.loadUrl("http://10.0.2.2/API/public/piechart?idUser="+idUser);
+        w.loadUrl("http://www.gyejacquot-pierre.fr/API/public/piechart?idUser="+user.getIdUser());
+        //w.loadUrl("http://10.0.2.2/API/public/piechart?idUser="+user.getIdUser());
 
-/** Gestion de la WebView qui affiche les stats en colonnes */
-        WebView w2 = (WebView) findViewById(R.id.statColumn);
+        /** Gestion de la WebView qui affiche les stats en colonnes */
         w2.getSettings().setJavaScriptEnabled(true);
         final Activity activity2 = this;
 
@@ -115,8 +114,7 @@ public class StatsActivity extends AppCompatActivity {
         w2.getSettings().setLoadWithOverviewMode(true);
         w2.getSettings().setUseWideViewPort(true);
         // la webview charge l'URL de l'API qui affiche les colonnes
-        w2.loadUrl("http://www.gyejacquot-pierre.fr/API/public/columnchart?idUser="+idUser);
-        //w2.loadUrl("http://10.0.2.2/API/public/columnchart?idUser="+idUser);
-
+        w2.loadUrl("http://www.gyejacquot-pierre.fr/API/public/columnchart?idUser="+user.getIdUser());
+        //w2.loadUrl("http://10.0.2.2/API/public/columnchart?idUser="+user.getIdUser());
     }
 }

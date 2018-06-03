@@ -1,4 +1,4 @@
-package com.example.mathi.smartexpense.model;
+package com.example.mathi.smartexpense.network;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,13 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mathi.smartexpense.R;
-import com.example.mathi.smartexpense.network.HttpGetRequest;
+import com.example.mathi.smartexpense.model.ExpenseReport;
+import com.example.mathi.smartexpense.model.ListViewExpenseReport;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by mathi on 12/04/2018.
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
  */
 
 public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
@@ -51,7 +52,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
         viewHolder.amount = (TextView) convertView.findViewById(R.id.expenseTotal);
         viewHolder.deleteER = (Button) convertView.findViewById(R.id.deleteButtonER);
         // si la note de frais est déjà soumise, on enlève le bouton Supprimer
-        if (!er.getSubmissionDate().equals("null")) {
+        if (!er.getSubmissionDate().equals("")) {
             viewHolder.deleteER.setVisibility(View.GONE);
         // sinon, on affiche le bouton Supprimer
         } else {
@@ -64,7 +65,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
                 public void onClick(View view) {
                     // on ouvre une boite de dialogue, qui demande de confirmer la suppression
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
-                    builder1.setMessage("Voulez-vous supprimer la note de frais " + er.getCity() + " ?");
+                    builder1.setMessage("Voulez-vous supprimer la note de frais " + er.getExpenseReportCity() + " ?");
                     builder1.setCancelable(true);
                     // bouton Confirmer
                     builder1.setPositiveButton(
@@ -75,7 +76,7 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
                                     // la boite de dialogue se ferme
                                     dialog.cancel();
                                     // on envoie la requete http qui supprime la note de frais
-                                    String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getCode());
+                                    String myURL = "http://www.gyejacquot-pierre.fr/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getExpenseReportCode());
                                     //String myURL = "http://10.0.2.2/API/public/delete/er?expenseReportCode=" + String.valueOf(er.getCode());
 
                                     HttpGetRequest getRequest = new HttpGetRequest();
@@ -112,9 +113,9 @@ public class ExpenseReportAdapter extends ArrayAdapter<ExpenseReport> {
         convertView.setTag(viewHolder);
 
         // on remplit la cellule avec les données de la note de frais
-        viewHolder.date.setText(er.getDate());
-        viewHolder.city.setText(er.getCity());
-        viewHolder.comment.setText(er.getComment());
+        viewHolder.date.setText(er.getExpenseReportDate());
+        viewHolder.city.setText(er.getExpenseReportCity());
+        viewHolder.comment.setText(er.getExpenseReportComment());
         viewHolder.amount.setText(String.valueOf(er.getAmount())+"€");
         if (viewHolder.comment.getText().equals("")) {
             viewHolder.comment.setVisibility(View.GONE);

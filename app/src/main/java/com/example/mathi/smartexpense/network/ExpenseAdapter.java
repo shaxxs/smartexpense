@@ -1,28 +1,25 @@
-package com.example.mathi.smartexpense.model;
+package com.example.mathi.smartexpense.network;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mathi.smartexpense.DashboardActivity;
 import com.example.mathi.smartexpense.R;
-import com.example.mathi.smartexpense.network.HttpGetRequest;
+import com.example.mathi.smartexpense.model.Expense;
+import com.example.mathi.smartexpense.model.ListViewExpense;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by mathi on 13/04/2018.
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
  */
 
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
@@ -55,7 +52,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         viewHolder.amountExpense = (TextView) convertView.findViewById(R.id.amountExpense);
         viewHolder.deleteE = (Button) convertView.findViewById(R.id.deleteButtonE);
         // si la note de frais est déjà soumise, on enlève le bouton Supprimer
-        if (!e.getSubmissionDate().equals("null")) {
+        if (!e.getSubmissionDate().equals("")) {
             viewHolder.deleteE.setVisibility(View.GONE);
         // sinon, on affiche le bouton Supprimer
         } else {

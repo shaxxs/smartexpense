@@ -39,8 +39,7 @@
             android:layout_height="27dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:entries="@array/months" />
+            android:background="@android:color/background_light"/>
 
     </LinearLayout>
 
