@@ -350,7 +350,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         buttonProof.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                proof = new Proof("justificatif_" + String.valueOf(System.currentTimeMillis()), "http://www.gyejacquot-pierre.fr/API/src/Resources/upload/" +proof.getProofTitle() + ".jpg", er.getExpenseReportCode());
+                String proofTitle="justificatif_" + String.valueOf(System.currentTimeMillis());
+                proof = new Proof(proofTitle, "http://www.gyejacquot-pierre.fr/API/src/Resources/upload/" +proofTitle + ".jpg", er.getExpenseReportCode());
                 int permission = ActivityCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (permission != PackageManager.PERMISSION_GRANTED) {
