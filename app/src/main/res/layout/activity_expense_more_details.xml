@@ -18,8 +18,17 @@
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
+    
+    <ImageView
+        android:id="@+id/imageProof"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/departureLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
@@ -48,6 +57,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/returnLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
@@ -75,6 +85,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/departureCLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
@@ -102,6 +113,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/destCLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
@@ -129,6 +141,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/durationLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
@@ -156,6 +169,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/kmLinearLayout"
         android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"

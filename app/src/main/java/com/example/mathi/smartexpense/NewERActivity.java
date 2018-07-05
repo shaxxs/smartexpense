@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.mathi.smartexpense.model.Customer;
+import com.example.mathi.smartexpense.model.ExpenseReport;
+import com.example.mathi.smartexpense.model.User;
 import com.example.mathi.smartexpense.network.HttpGetRequest;
 
 import org.json.JSONArray;
@@ -31,27 +34,39 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class NewERActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+/**
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
+ */
 
+public class NewERActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
-    String result,result2;
-    JSONObject userProfile = null;
-    int idUser;
-    Spinner clientsSpinner;
-    String customerSelected;
+    private JSONObject userProfile = null;
     final String FILE_EXPENSE_REPORT = "file_expense_report";
-    final String EXPENSE_REPORT_CODE = "expense_report_code";
-    final String EXPENSE_REPORT_DATE = "expense_report_date";
-    final String EXPENSE_REPORT_CITY = "expense_report_city";
-    final String EXPENSE_REPORT_SUBMISSION_DATE = "expense_report_submission_date";
+    final String EXPENSE_REPORT_KEY = "expense_report";
+
+    private User user = new User();
+    private ExpenseReport expenseReport;
+    Customer customer;
+    Customer customerSelected;
+
+    Spinner clientsSpinner;
+    Button buttonAddER;
+    Button buttonReturn;
+    private TextView thedate;
+    private EditText cityText;
+    private EditText commentsText;
+
+    private List<Customer> customers = new ArrayList<Customer>();
+    int idCustomerSelected;
+    String result,result2;
     private String currentDate;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -60,32 +75,33 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newer);
 
+        buttonAddER = findViewById(R.id.btnAddExpense);
+        buttonReturn = findViewById(R.id.returnButton);
+        thedate = findViewById(R.id.date);
+        cityText = findViewById(R.id.city);
+        commentsText = findViewById(R.id.comments);
+        clientsSpinner = (Spinner) findViewById(R.id.clientsSpinner);
+
         //Gestion de la liste déroulante
         addListenerOnSpinnerItemSelection();
 
- /** RECUPERATION DONNEES VUE PRECEDENTE **/
+        /** RECUPERATION DONNEES VUE PRECEDENTE **/
 
         final SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         final String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
         try {
             userProfile = new JSONObject(user_profile);
+            user = user.jsonToUser(userProfile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
-            if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("userLastName") + "/" + userProfile.getString("userFirstName"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (userProfile != null) {
+            Log.v("Data SharedPreferences", user.getUserLastName() + "/" + user.getUserFirstName());
         }
 
+        /** GESTION DU CHOIX DE LA DATE **/
 
-/** GESTION DU CHOIX DE LA DATE **/
-
-        //initialiser le champs date
-        final TextView thedate = findViewById(R.id.date);
         // perform click event on edit text
         thedate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,114 +130,86 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-/** GESTION DU CHOIX CLIENT **/
+        /** GESTION DU CHOIX CLIENT **/
 
         //Appel de la fonction pour récupérer la liste de tous les clients
         String myURL = "http://www.gyejacquot-pierre.fr/API/public/customers";
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
             result = getRequest.execute(myURL).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            // tableau JSON qui contient le résultat
+            JSONArray array = new JSONArray(result);
+            // boucle sur la longueur du tableau JSON qui contient le résultat de la requete
+            for (int i= 0; i < array.length(); i++) {
+                // à chaque tour de boucle, on récupère un objet JSON du tableau, qui contient les données d'un client
+                JSONObject obj = new JSONObject(array.getString(i));
+                // on instancie un Customer, qu'on ajoute à une liste de Customer
+                customers.add(customer = new Customer(obj.getInt("idCustomer"), obj.getString("customerLastName"), obj.getString("customerFirstName")));
+            }
+        } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Retour HTTPGetRequest Customer: " + result);
+        //System.out.println("Retour HTTPGetRequest Customer: " + result);
 
-
-        //Remplissage de la spinner avec choix multiple
-        final Spinner spinner = (Spinner) findViewById(R.id.clientsSpinner);
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryLabels, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+        ArrayAdapter<Customer> adapter = new ArrayAdapter<Customer>(this, android.R.layout.simple_spinner_item, customers);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        clientsSpinner.setAdapter(adapter);
 
-/** GESTION DE LA VALIDATION DE LA NOTE DE FRAIS **/
-
-        final EditText cityText = findViewById(R.id.city);
-        final EditText commentsText = findViewById(R.id.comments);
-
-        Button buttonAddER = findViewById(R.id.btnAddExpense);
+        /** GESTION DE LA VALIDATION DE LA NOTE DE FRAIS **/
         buttonAddER.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ERDate= (String) thedate.getText();
-                String city = String.valueOf(cityText.getText());
-                String city_replace = city.replace(" ", "_");
-                // on parse la date au format US
-                String ERDateUS = "";
-                try {
-                    ERDateUS = parseDateToUS(ERDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            String date = "";
+            try {
+                date = parseDateToUS(String.valueOf(thedate.getText()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-
-                int customer = 1;
-//                int customer = (int) spinner.getSelectedItem();
-                String comments = String.valueOf(commentsText.getText());
-                String comments_replace = comments.replace(" ", "_");
-                try {
-                    idUser = userProfile.getInt("idUser");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    // si la date saisie est supérieure à la date du jour
-                    if ((!String.valueOf(ERDateUS).equals("")) && parseDate(currentDate).before(parseDate(ERDateUS))) {
-                        Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
+            try {
+                // si la date saisie est supérieure à la date du jour
+                if ((!date.equals("")) && parseDate(currentDate).before(parseDate(date))) {
+                    Toast.makeText(getApplicationContext(), "Date supérieure à la date du jour", Toast.LENGTH_SHORT).show();
+                } else {
+                    // si les champs date et ville sont vides
+                    if (date.equals("") || String.valueOf(cityText.getText()).equals("")) {
+                        Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
                     } else {
-                        // si les champs date et ville sont vides
-                        if (String.valueOf(ERDateUS).equals("") || String.valueOf(city).equals("")) {
-                            Toast.makeText(getApplicationContext(), "Veuillez renseigner tous les champs obligatoires", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Appel de la fonction pour créer une note de frais
-                            String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+ERDateUS+"&expenseReportCity="+city_replace+"&expenseReportComment="+comments_replace+"&idUser="+idUser+"&idCustomer="+customer;
-                            //String myURL2 = "http://10.0.2.2/smartExpenseApi/API/public/expensereport/add?expenseReportDate=" + ERDateUS + "&expenseReportCity=" + city_replace + "&expenseReportComment=" + comments_replace + "&idUser=" + idUser + "&idCustomer=" + customer;
-
-                            HttpGetRequest getRequest = new HttpGetRequest();
-                            try {
-                                result2 = getRequest.execute(myURL2).get();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }
-                            System.out.println("Retour HTTPGetRequest ExpenseReport : " + result2);
-
-
-                    /* lien vers la vue ajouter une dépense */
-                            Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
-                    /* Je transmets à la vue suivante les données de la note de frais pour les relier aux dépenses */
-                            startActivity(intent);
-                            String submissionDate = "";
-                            SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
-                            sharedPreferencesER.edit()
-                                    .putString(EXPENSE_REPORT_CITY, city)
-                                    .putInt(EXPENSE_REPORT_CODE, Integer.parseInt(result2))
-                                    .putString(EXPENSE_REPORT_DATE, ERDate)
-                                    .putString(EXPENSE_REPORT_SUBMISSION_DATE, submissionDate)
-                                    .apply();
+                        expenseReport = new ExpenseReport(date, String.valueOf(cityText.getText()), String.valueOf(commentsText.getText()),"", user.getIdUser(), idCustomerSelected);
+                        //Appel de la fonction pour créer une note de frais
+                        String myURL2="http://www.gyejacquot-pierre.fr/API/public/expensereport/add?expenseReportDate="+parseDateToUS(expenseReport.getExpenseReportDate())+"&expenseReportCity="+expenseReport.getExpenseReportCity().replace(" ", "_")+"&expenseReportComment="+expenseReport.getExpenseReportComment().replace(" ", "_")+"&idUser="+expenseReport.getIdUser()+"&idCustomer="+idCustomerSelected;
+                        //String myURL2 = "http://10.0.2.2/API/public/expensereport/add?expenseReportDate="+parseDateToUS(expenseReport.getExpenseReportDate())+"&expenseReportCity="+expenseReport.getExpenseReportCity().replace(" ", "_")+"&expenseReportComment="+expenseReport.getExpenseReportComment().replace(" ", "_")+"&idUser="+expenseReport.getIdUser()+"&idCustomer="+idCustomerSelected;
+                        HttpGetRequest getRequest = new HttpGetRequest();
+                        try {
+                            result2 = getRequest.execute(myURL2).get();
+                            expenseReport.setExpenseReportCode(Integer.parseInt(result2));
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
                         }
+                        //System.out.println("Retour HTTPGetRequest ExpenseReport : " + result2);
 
+
+                        /* lien vers la vue ajouter une dépense */
+                        Intent intent = new Intent(NewERActivity.this, NewExpenseActivity.class);
+                        /* Je transmets à la vue suivante les données de la note de frais pour les relier aux dépenses */
+                        startActivity(intent);
+
+                        SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
+                        sharedPreferencesER.edit()
+                                .putString(EXPENSE_REPORT_KEY, expenseReport.toJSON())
+                                .apply();
                     }
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
-
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             }
         });
 
-/** BOUTON RETOUR **/
+        /** BOUTON RETOUR **/
 
         /* Gestion du clic sur le bouton retour */
-        Button boutonReturn = findViewById(R.id.returnButton);
-        boutonReturn.setOnClickListener(new View.OnClickListener() {
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /* Lien vers la vue Notes de Frais */
@@ -229,20 +217,19 @@ public class NewERActivity extends AppCompatActivity implements AdapterView.OnIt
                 startActivity(intent);
             }
         });
-
     }
 
-    //Gestion de la sélection sur la liste déroulante
+    /** Gestion de la sélection sur la liste déroulante */
     private void addListenerOnSpinnerItemSelection() {
-        clientsSpinner = (Spinner) findViewById(R.id.clientsSpinner);
         clientsSpinner.setOnItemSelectedListener(this);
     }
 
-//Gestion de l'item sélectionné dans la liste déroulante
+    /** Gestion de l'item sélectionné dans la liste déroulante */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        customerSelected = adapterView.getItemAtPosition(i).toString();
-        System.out.println("Client selectionne: "+customerSelected);
+        customerSelected = (Customer) adapterView.getSelectedItem();
+        idCustomerSelected = customerSelected.getIdCustomer();
+        //System.out.println("Client selectionne: "+customerSelected.getIdCustomer());
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.example.mathi.smartexpense.model;
 
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by mathi on 13/04/2018.
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
  */
 
 /** rôle de mini controlleur, associé à chaque cellule, et qui va recevoir les données de chaque dépense

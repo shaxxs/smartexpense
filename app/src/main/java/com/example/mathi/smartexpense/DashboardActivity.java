@@ -10,62 +10,65 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.mathi.smartexpense.model.User;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+/**
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
+ */
 
 public class DashboardActivity extends AppCompatActivity {
 
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
 
+    private User user = new User();
+
+    TextView firstName;
+    TextView lastName;
+    TextView labelEmail;
+    Button boutonNF;
+    Button bouton1;
+    Button bouton2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        /* récupération des données de la vue précédente */
+        firstName = findViewById(R.id.labelFirstName);
+        lastName = findViewById(R.id.labelLastName);
+        labelEmail = findViewById(R.id.labelEmail);
+        boutonNF = findViewById(R.id.expenseReportButton);
+        bouton1 = findViewById(R.id.refundTrackerButton);
+        bouton2 = (Button) findViewById(R.id.statButton);
+
+        /** Récupération des données du fichier SharedPreferences */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
         String user_profile = myPref.getString(LOGIN_PASS_KEY, "{}");
         Log.v("shared_preferences", user_profile);
         JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("userLastName") + "/" + userProfile.getString("userFirstName"));
-            }
+            user = user.jsonToUser(userProfile);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        //Affichage des données du profil utilisateur
-        TextView firstName = findViewById(R.id.labelFirstName);
-        try {
-            if (userProfile != null) {
-                firstName.setText(userProfile.getString("userFirstName"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (userProfile != null) {
+            Log.v("Data SharedPreferences", user.getUserLastName() + "/" + user.getUserFirstName());
         }
-        TextView lastName = findViewById(R.id.labelLastName);
-        try {
-            assert userProfile != null;
-            lastName.setText(userProfile.getString("userLastName").toUpperCase());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        TextView labelEmail = findViewById(R.id.labelEmail);
-        try {
-            labelEmail.setText(userProfile.getString("userEmail"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        if (userProfile != null) {
+            firstName.setText(user.getUserFirstName());
+            lastName.setText(user.getUserLastName().toUpperCase());
+            labelEmail.setText(user.getUserEmail());
         }
       
-        //Gestion du clic sur le bouton Mes notes de frais
-        Button boutonNF = findViewById(R.id.expenseReportButton);
+        /** Gestion du clic sur le bouton Mes notes de frais */
         boutonNF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +78,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        // Gestion du clic sur le bouton Suivi remboursements
-        Button bouton1 = findViewById(R.id.refundTrackerButton);
+        /** Gestion du clic sur le bouton Suivi remboursements */
         bouton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,8 +88,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        /* Gestion du clic sur le bouton Statistiques */
-        Button bouton2 = (Button) findViewById(R.id.statButton);
+        /** Gestion du clic sur le bouton Statistiques */
         bouton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

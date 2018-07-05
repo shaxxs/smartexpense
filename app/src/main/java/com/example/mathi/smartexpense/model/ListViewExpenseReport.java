@@ -4,7 +4,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * Created by mathi on 12/04/2018.
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
  */
 
 /** rôle de mini controlleur, associé à chaque cellule, et qui va recevoir les données de chaque note de frais

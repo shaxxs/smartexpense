@@ -7,48 +7,50 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.mathi.smartexpense.model.ExpenseReport;
-import com.example.mathi.smartexpense.model.ExpenseReportAdapter;
-import com.example.mathi.smartexpense.model.ListViewExpenseReport;
+import com.example.mathi.smartexpense.network.ExpenseReportAdapter;
+import com.example.mathi.smartexpense.model.User;
 import com.example.mathi.smartexpense.network.HttpGetRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+/**
+ * Created by Pierre Gyejacquot, Ahmed Hamad and Mathilde Person.
+ */
 
 public class ExpenseReportActivity extends AppCompatActivity {
 
-    private ListView liste;
     final String FILE_EXPENSE_REPORT = "file_expense_report";
-    final String EXPENSE_REPORT_CODE = "expense_report_code";
-    final String EXPENSE_REPORT_DATE = "expense_report_date";
-    final String EXPENSE_REPORT_CITY = "expense_report_city";
-    final String EXPENSE_REPORT_SUBMISSION_DATE = "expense_report_submission_date";
-    ExpenseReportAdapter adapter;
+    final String EXPENSE_REPORT_KEY = "expense_report";
     final String LOGIN_PASS_KEY = "user_profile";
     final String FILE_PROFILE = "file_user_profile";
+
+    private User user = new User();
+
+    Button buttonAdd;
+    Button buttonReturn;
+
+    private ExpenseReportAdapter adapter;
+    ListView liste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_report);
+
+        buttonAdd = findViewById(R.id.addERButton);
+        buttonReturn = findViewById(R.id.returnButton);
+        liste = findViewById(R.id.listExpenseReport);
 
 /** récupération des données stockées dans le fichier SharedPreferences */
         SharedPreferences myPref = this.getSharedPreferences(FILE_PROFILE, Context.MODE_PRIVATE);
@@ -57,54 +59,17 @@ public class ExpenseReportActivity extends AppCompatActivity {
         JSONObject userProfile = null;
         try {
             userProfile = new JSONObject(user_profile);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (userProfile != null) {
-                Log.v("Data SharedPreferences", userProfile.getString("email") + "/" + userProfile.getString("nom"));
-            }
+            user = user.jsonToUser(userProfile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-/** Gestion du clic sur le bouton Ajouter une nouvelle note de frais */
-        Button buttonAdd = findViewById(R.id.addERButton);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Lien vers la vue Ajouter une Note de Frais
-                Intent intentNewER = new Intent(ExpenseReportActivity.this, NewERActivity.class);
-                startActivity(intentNewER);
-            }
-        });
-
-/** Gestion du clic sur le bouton retour */
-        Button buttonReturn = findViewById(R.id.returnButton);
-        buttonReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            /* Lien vers la vue Tableau de bord */
-                Intent intentReturn = new Intent(ExpenseReportActivity.this, DashboardActivity.class);
-                startActivity(intentReturn);
-            }
-        });
-
-
-/** Gestion de la ListView */
-        // on récupère l'idUser du fichier SharedPreferences
-        String idUser = "";
-        try {
-            idUser = userProfile.getString("idUser");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        liste = findViewById(R.id.listExpenseReport);
+        /** Gestion de la ListView */
         // liste des notes de frais qui seront injectées dans la ListView
         List<ExpenseReport> erList = new ArrayList<ExpenseReport>();
         // URL de l'API qui récupère les données des notes de frais
-        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+idUser;
-        //String myURL = "http://10.0.2.2/smartExpenseApi/API/public/expensereports?idUser="+idUser;
+        String myURL = "http://www.gyejacquot-pierre.fr/API/public/expensereports?idUser="+user.getIdUser();
+        //String myURL = "http://10.0.2.2/API/public/expensereports?idUser="+user.getIdUser();
         // on instancie la classe HttpGetRequest qui permet de créer la requete HTTP avec l'url de l'API
         HttpGetRequest getRequest = new HttpGetRequest();
         try {
@@ -116,21 +81,26 @@ public class ExpenseReportActivity extends AppCompatActivity {
             for (int i= 0; i < array.length(); i++) {
                 // à chaque tour de boucle, on récupère un objet JSON du tableau, qui contient les données d'une note de frais, 1 note de frais = 1 objet
                 JSONObject obj = new JSONObject(array.getString(i));
-                String comment = "";
+                String comment;
+                String submissionDate;
                 // si le champ expenseReportComment de la note de frais est vide
                 if (obj.isNull("expenseReportComment")) {
                     comment = "";
                 } else {
                     comment = obj.getString("expenseReportComment");
                 }
+                // si le champ submissionDate de la note de frais est vide
+                if (obj.isNull("submissionDate")) {
+                    submissionDate = "";
+                } else {
+                    submissionDate = obj.getString("submissionDate");
+                }
                 // calcul du montant total de la note de frais (addition des montants des dépenses)
                 float erTotal = Float.parseFloat(obj.getString("totalTravel"))+Float.parseFloat(obj.getString("totalBusiness"));
                 // on ajoute la note de frais à la liste
-                erList.add(new ExpenseReport(obj.getString("expenseReportDate"), obj.getString("expenseReportCity"),comment, obj.getInt("expenseReportCode"), obj.getString("submissionDate"), erTotal));
+                erList.add(new ExpenseReport(obj.getString("expenseReportDate"), obj.getString("expenseReportCity"),comment, obj.getInt("expenseReportCode"), submissionDate, erTotal, obj.getInt("idUser"), obj.getInt("idCustomer")));
             }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
 
@@ -139,7 +109,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
         // affecte les cellules à notre ListView
         liste.setAdapter(adapter);
 
-/** Gestion du clic sur une cellule de la ListView */
+        /** Gestion du clic sur une cellule de la ListView */
         liste.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -149,10 +119,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
                 // On ajoute les données de la note de frais à notre fichier sharedpreferences
                 SharedPreferences sharedPreferencesER = getSharedPreferences(FILE_EXPENSE_REPORT, Context.MODE_PRIVATE);
                 sharedPreferencesER.edit()
-                        .putString(EXPENSE_REPORT_CITY, adapter.getItem(position).getCity())
-                        .putInt(EXPENSE_REPORT_CODE, adapter.getItem(position).getCode())
-                        .putString(EXPENSE_REPORT_DATE, adapter.getItem(position).getDate())
-                        .putString(EXPENSE_REPORT_SUBMISSION_DATE, adapter.getItem(position).getSubmissionDate())
+                        .putString(EXPENSE_REPORT_KEY, adapter.getItem(position).toJSON())
                         .apply();
 
                 // lien vers la page Note de frais - Détails
@@ -160,7 +127,26 @@ public class ExpenseReportActivity extends AppCompatActivity {
                 startActivity(intentNextPage);
             }
         });
-    }
 
+        /** Gestion du clic sur le bouton Ajouter une nouvelle note de frais */
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Lien vers la vue Ajouter une Note de Frais
+                Intent intentNewER = new Intent(ExpenseReportActivity.this, NewERActivity.class);
+                startActivity(intentNewER);
+            }
+        });
+
+        /** Gestion du clic sur le bouton retour */
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            /* Lien vers la vue Tableau de bord */
+                Intent intentReturn = new Intent(ExpenseReportActivity.this, DashboardActivity.class);
+                startActivity(intentReturn);
+            }
+        });
+    }
 }
 
